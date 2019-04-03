@@ -19,16 +19,13 @@ global.expect = require('chai').expect;
 global.logger = require('./_common/logging/logger.js')(process.env.LOG_LEVEL);
 
 global.config = {};
-global.TIMEOUT_VALUE = 0;
-global.DELETE_PROJ_DELAY = 5000;
-
 global.config.apiUrl = process.env.SHIPPABLE_API_URL;
 
 global.SHIPPABLE_API_TOKEN = process.env.SHIPPABLE_API_TOKEN;
 
-global.GH_OWN_PROJECT_API_NAME = process.env.GH_OWN_PROJECT_API_NAME
-global.GH_OWN_PROJECT_API_SOURCE_ID = process.env.GH_OWN_PROJECT_API_SOURCE_ID
-global.GH_OWN_PROJECT_API_PROJECT_RENAME = process.env.GH_OWN_PROJECT_API_PROJECT_RENAME
+global.GH_USR_API_PROJECT_NAME = process.env.GH_USR_API_PROJECT_NAME
+global.GH_USR_API_PROJECT_SOURCE_ID = process.env.GH_USR_API_PROJECT_SOURCE_ID
+global.GH_USR_API_PROJECT_RENAME = process.env.GH_USR_API_PROJECT_RENAME
 // each test starts off as a new process, setup required constants
 function testSetup(done) {
   var who = util.format('%s|%s', self.name, testSetup.name);

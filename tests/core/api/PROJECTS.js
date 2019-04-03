@@ -8,9 +8,9 @@ var test = util.format('%s - %s', testSuite, testSuiteDesc);
 
 describe(test,
   function () {
-    var ownerApiAdapter = null;
+    var userApiAdapter = null;
     var project = [];
-
+  
     this.timeout(0);
     before(
       function (done) {
@@ -24,7 +24,7 @@ describe(test,
               return done(err);
             }
 
-            ownerApiAdapter =
+            userApiAdapter =
               global.newApiAdapterByToken(global.SHIPPABLE_API_TOKEN);
 
             return done();
@@ -34,14 +34,14 @@ describe(test,
       }
     );
 
-    it('1. Owner can add new project',
+    it('1. User can add new project',
       function (done) {
         var body = {
-          "name": global.GH_OWN_PROJECT_API_NAME,
+          "name": global.GH_USR_API_PROJECT_NAME,
           "providerId": 1,
-          "sourceId": global.GH_OWN_PROJECT_API_SOURCE_ID
+          "sourceId": global.GH_USR_API_PROJECT_SOURCE_ID
         };
-        ownerApiAdapter.postProject(body,
+        userApiAdapter.postProject(body,
           function (err, prj) {
             if (err)
               return done(
@@ -57,9 +57,9 @@ describe(test,
       }
     );
 
-    it('2. Owner can get project by Id',
+    it('2. User can get project by Id',
       function (done) {
-        ownerApiAdapter.getProjectById(project.id,
+        userApiAdapter.getProjectById(project.id,
           function (err, prj) {
             if (err || _.isEmpty(prj))
               return done(
@@ -75,12 +75,12 @@ describe(test,
       }
     );
 
-    it('3. Owner can update the project',
+    it('3. User can update the project',
       function (done) {
         var body = {
-          "name": global.GH_OWN_PROJECT_API_PROJECT_RENAME
+          "name": global.GH_USR_API_PROJECT_RENAME
         };
-        ownerApiAdapter.putProjectById(project.id, body,
+        userApiAdapter.putProjectById(project.id, body,
           function (err, prj) {
             if (err)
               return done(
@@ -96,9 +96,9 @@ describe(test,
       }
     );
 
-    it('4. Owner can get projects',
+    it('4. User can get projects',
       function (done) {
-        ownerApiAdapter.getProjects('',
+        userApiAdapter.getProjects('',
           function (err, prjs) {
             if (err || _.isEmpty(prjs))
               return done(
@@ -107,7 +107,7 @@ describe(test,
                     query, err)
                 )
               );
-            project = _.findWhere(prjs, {name: global.GH_OWN_PROJECT_API_PROJECT_RENAME});
+            project = _.findWhere(prjs, {name: global.GH_USR_API_PROJECT_RENAME});
 
             return done();
           }

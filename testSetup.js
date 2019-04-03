@@ -26,6 +26,8 @@ global.SHIPPABLE_API_TOKEN = process.env.SHIPPABLE_API_TOKEN;
 global.GH_USR_API_PROJECT_NAME = process.env.GH_USR_API_PROJECT_NAME
 global.GH_USR_API_PROJECT_SOURCE_ID = process.env.GH_USR_API_PROJECT_SOURCE_ID
 global.GH_USR_API_PROJECT_RENAME = process.env.GH_USR_API_PROJECT_RENAME
+global.GH_USR_API_INTEGRATION_NAME = process.env.GH_USR_API_INTEGRATION_NAME
+global.GH_USR_API_RENAME_INTERGATION = process.env.GH_USR_API_RENAME_INTERGATION
 // each test starts off as a new process, setup required constants
 function testSetup(done) {
   var who = util.format('%s|%s', self.name, testSetup.name);

@@ -142,6 +142,48 @@ ShippableAdapter.prototype.putPipelineById =
     );
   };
 
+ShippableAdapter.prototype.getIntegrations =
+  function (query, callback) {
+    this.get(
+      util.format('/integrations?%s', query),
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.getIntegrationById =
+  function (id, callback) {
+    this.get(
+      util.format('/integrations/%s', id),
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.postIntegration =
+  function (json, callback) {
+    this.post(
+      '/integrations',
+       json,
+       callback
+    );
+  };
+
+ShippableAdapter.prototype.putIntegrationById =
+  function (id, json, callback) {
+    this.put(
+      util.format('/integrations/%s', id),
+      json,
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.deleteIntegrationById =
+  function (id, callback) {
+    this.get(
+      util.format('/integrations/%s', id),
+      callback
+    );
+  };
+
 ShippableAdapter.prototype.get =
   function (relativeUrl, callback) {
     var bag = {};

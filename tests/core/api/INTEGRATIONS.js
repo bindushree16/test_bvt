@@ -100,7 +100,6 @@ describe(test,
                 )
               );
             integration = _.findWhere(ints, {masterIntegrationName: "dockerRegistryLogin"});
-            console.log('integration', integration);
             assert.isNotEmpty(ints, 'User cannot find the integration');
             return done();
           }

@@ -40,7 +40,8 @@ function testRun(next) {
   // takes a list of files/ directories for mocha and runs all in series
   var tests = [
    'tests/core/api/PROJECTS.js',
-   'tests/core/api/SYSTEMCODES.js'
+   'tests/core/api/SYSTEMCODES.js',
+   'tests/core/api/INTEGRATIONS.js'
   ];
 
   async.eachSeries(tests,

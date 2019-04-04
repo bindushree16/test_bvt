@@ -117,7 +117,7 @@ describe(test,
 
     it('4. User can get their pipelinesources by Id',
       function (done) {
-        userApiAdapter.getPipelineSourcesById(pipelineSource.id,
+        userApiAdapter.getPipelineSourceById(pipelineSource.id,
           function (err, piplinsid) {
             if (err)
               return done(

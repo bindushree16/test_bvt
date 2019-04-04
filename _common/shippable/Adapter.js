@@ -184,6 +184,50 @@ ShippableAdapter.prototype.deleteIntegrationById =
     );
   };
 
+
+ShippableAdapter.prototype.getPipelineSources =
+  function (query, callback) {
+    this.get(
+      util.format('/pipelineSources?%s', query),
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.getPipelineSourceById =
+  function (id, callback) {
+    this.get(
+      util.format('/pipelineSources/%s', id),
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.postPipelineSources =
+  function (json, callback) {
+    this.post(
+      '/pipelineSources',
+      json,
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.putPipelineSourcesById =
+  function (id, json, callback) {
+    this.put(
+      util.format('/pipelineSources/%s', id),
+      json,
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.deletePipelineSourcesById =
+  function (id, callback) {
+    this.delete(
+      util.format('/pipelineSources/%s', id),
+      callback
+    );
+  };
+
+
 ShippableAdapter.prototype.get =
   function (relativeUrl, callback) {
     var bag = {};

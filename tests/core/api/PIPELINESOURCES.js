@@ -174,7 +174,7 @@ describe(test,
       }
     );
 
-    it('5. Id field in pipelineSource API shouldnot be null and should be a integer type',
+    it('7. Id field in pipelineSource API shouldnot be null and should be a integer type',
       function (done) {
         assert.isNotNull(pipelineSource.id, 'PipelineSources cannot be null');
         assert.equal(typeof(pipelineSource.id), 'number');
@@ -182,7 +182,7 @@ describe(test,
       }
     );
 
-    it('6. ProjectId field in pipelineSource API shouldnot be null and should be a integer type',
+    it('8. ProjectId field in pipelineSource API shouldnot be null and should be a integer type',
       function (done) {
         assert.isNotNull(pipelineSource.projectId, 'PipelineSources cannot be null');
         assert.equal(typeof(pipelineSource.projectId), 'number');
@@ -190,7 +190,7 @@ describe(test,
       }
     );
 
-    it('7. RepositoryFullName field in pipelineSource API shouldnot be null and should be a string',
+    it('9. RepositoryFullName field in pipelineSource API shouldnot be null and should be a string',
       function (done) {
         assert.isNotNull(pipelineSource.repositoryFullName, 'PipelineSources cannot be null');
         assert.equal(typeof(pipelineSource.repositoryFullName), 'string');
@@ -198,7 +198,7 @@ describe(test,
       }
     );
 
-    it('8. Branch field in pipelineSource API shouldnot be null and should be a string',
+    it('10. Branch field in pipelineSource API shouldnot be null and should be a string',
       function (done) {
         assert.isNotNull(pipelineSource.branch, 'PipelineSources cannot be null');
         assert.equal(typeof(pipelineSource.branch), 'string');
@@ -206,7 +206,7 @@ describe(test,
       }
     );
 
-    it('9. FileFilter field in pipelineSource API shouldnot be null and should be a string',
+    it('11. FileFilter field in pipelineSource API shouldnot be null and should be a string',
       function (done) {
         assert.isNotNull(pipelineSource.fileFilter, 'PipelineSources cannot be null');
         assert.equal(typeof(pipelineSource.fileFilter), 'string');
@@ -214,7 +214,7 @@ describe(test,
       }
     );
 
-    it('10. IntegrationId field in pipelineSource API shouldnot be null and should be a integer type',
+    it('12. IntegrationId field in pipelineSource API shouldnot be null and should be a integer type',
       function (done) {
         assert.isNotNull(pipelineSource.integrationId, 'PipelineSources cannot be null');
         assert.equal(typeof(pipelineSource.integrationId), 'number');
@@ -222,7 +222,7 @@ describe(test,
       }
     );
 
-    it('11. IsSyncing field in pipelineSource API should be a boolean type',
+    it('13. IsSyncing field in pipelineSource API should be a boolean type',
       function (done) {
         assert.isNotNull(pipelineSource.isSyncing, 'PipelineSources cannot be null');
         assert.equal(typeof(pipelineSource.isSyncing), 'boolean');
@@ -230,7 +230,7 @@ describe(test,
       }
     );
 
-    it('12. LastSyncStatusCode field in pipelineSource API shouldnot be null and should be a integer type',
+    it('14. LastSyncStatusCode field in pipelineSource API shouldnot be null and should be a integer type',
       function (done) {
         assert.isNotNull(pipelineSource.lastSyncStatusCode, 'PipelineSources cannot be null');
         assert.equal(typeof(pipelineSource.lastSyncStatusCode), 'number');
@@ -238,7 +238,7 @@ describe(test,
       }
     );
 
-    it('13. LastSyncStartedAt field in pipelineSource API shouldnot be null and should be a string',
+    it('15. LastSyncStartedAt field in pipelineSource API shouldnot be null and should be a string',
       function (done) {
         assert.isNotNull(pipelineSource.lastSyncStartedAt, 'PipelineSources cannot be null');
         assert.equal(typeof(pipelineSource.lastSyncStartedAt), 'string');
@@ -246,7 +246,7 @@ describe(test,
       }
     );
 
-    it('14. LastSyncEndedAt field in pipelineSource API shouldnot be null and should be a string',
+    it('16. LastSyncEndedAt field in pipelineSource API shouldnot be null and should be a string',
       function (done) {
         assert.isNotNull(pipelineSource.lastSyncEndedAt, 'PipelineSources cannot be null');
         assert.equal(typeof(pipelineSource.lastSyncEndedAt), 'string');
@@ -254,14 +254,14 @@ describe(test,
       }
     );
 
-    // it('15. LastSyncLogs field in pipelineSource API should be an object type',
+    // it('17. LastSyncLogs field in pipelineSource API should be an object type',
     //   function (done) {
     //     assert.equal(typeof(pipelineSource.lastSyncLogs), 'object');
     //     return done();
     //   }
     // );
 
-    it('16. ResourceId field in pipelineSource API shouldnot be null and should be a integer type',
+    it('18. ResourceId field in pipelineSource API shouldnot be null and should be a integer type',
       function (done) {
         assert.isNotNull(pipelineSource.resourceId, 'PipelineSources cannot be null');
         assert.equal(typeof(pipelineSource.resourceId), 'number');
@@ -269,7 +269,7 @@ describe(test,
       }
     );
 
-    // it('17. CreatedBy field in pipelineSource API shouldnot be null and should be a string',
+    // it('19. CreatedBy field in pipelineSource API shouldnot be null and should be a string',
     //    function (done) {
     //   assert.isNotNull(pipelineSource.createdBy, 'PipelineSources cannot be null');
     //       assert.equal(typeof(pipelineSource.createdBy), 'string');
@@ -277,7 +277,7 @@ describe(test,
     //     }
     //   );
 
-    // it('18. UpdatedBy field in pipelineSource API shouldnot be null and should be a string',
+    // it('20. UpdatedBy field in pipelineSource API shouldnot be null and should be a string',
     //   function (done) {
     //     assert.isNotNull(pipelineSource.updatedBy, 'PipelineSources cannot be null');
     //     assert.equal(typeof(pipelineSource.updatedBy), 'string');
@@ -285,7 +285,7 @@ describe(test,
     //   }
     // );
 
-    it('19. CreatedAt field in pipelineSource API shouldnot be null and should be a string',
+    it('21. CreatedAt field in pipelineSource API shouldnot be null and should be a string',
       function (done) {
         assert.isNotNull(pipelineSource.createdAt, 'PipelineSources cannot be null');
         assert.equal(typeof(pipelineSource.createdAt), 'string');
@@ -293,7 +293,7 @@ describe(test,
       }
     );
 
-    it('20. UpdatedAt field in pipelineSource API shouldnot be null and should be a string',
+    it('22. UpdatedAt field in pipelineSource API shouldnot be null and should be a string',
       function (done) {
         assert.isNotNull(pipelineSource.updatedAt, 'PipelineSources cannot be null');
         assert.equal(typeof(pipelineSource.updatedAt), 'string');
@@ -301,7 +301,7 @@ describe(test,
       }
     );
 
-    it('21.  User can delete pipelineSource by Id',
+    it('23.  User can delete pipelineSource by Id',
       function (done) {
          userApiAdapter.deletePipelineSourcesById(pipelineSource.id,
            function (err, result) {

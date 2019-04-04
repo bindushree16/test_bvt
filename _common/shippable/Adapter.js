@@ -193,7 +193,7 @@ ShippableAdapter.prototype.getPipelineSources =
     );
   };
 
-ShippableAdapter.prototype.getPipelineSourcesById =
+ShippableAdapter.prototype.getPipelineSourceById =
   function (id, callback) {
     this.get(
       util.format('/pipelineSources/%s', id),

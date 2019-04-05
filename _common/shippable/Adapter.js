@@ -178,7 +178,7 @@ ShippableAdapter.prototype.putIntegrationById =
 
 ShippableAdapter.prototype.deleteIntegrationById =
   function (id, callback) {
-    this.get(
+    this.delete(
       util.format('/integrations/%s', id),
       callback
     );
@@ -227,6 +227,47 @@ ShippableAdapter.prototype.deletePipelineSourcesById =
     );
   };
 
+ShippableAdapter.prototype.getResources =
+  function (query, callback) {
+    this.get(
+      '/resources?' + query,
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.getResourceById =
+  function (id, callback) {
+    this.get(
+      util.format('/resources/%s', id),
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.postResource =
+  function (json, callback) {
+    this.post(
+      '/resources',
+      json,
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.putResourceById =
+  function (id, json, callback) {
+    this.put(
+      util.format('/resources/%s', id),
+      json,
+      callback
+     );
+   };
+
+ShippableAdapter.prototype.deleteResourceById =
+ function (id, callback) {
+   this.delete(
+     util.format('/resources/%s', id),
+     callback
+     );
+   };
 
 ShippableAdapter.prototype.get =
   function (relativeUrl, callback) {

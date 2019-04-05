@@ -1,7 +1,6 @@
 'use strict';
 
 var testSetup = require('../../../testSetup.js');
-var backoff = require('backoff');
 
 var testSuite = 'API_SYSTEMCODES';
 var testSuiteDesc = 'Github Organization Systemcodes API tests';
@@ -47,7 +46,7 @@ describe(test,
                     query, err)
                 )
               );
-             systemCodes = _.first(codes);
+            systemCodes = _.first(codes);
 
 
             assert.isNotEmpty(codes, 'User cannot find the codes');

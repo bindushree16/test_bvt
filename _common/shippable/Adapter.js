@@ -269,6 +269,50 @@ ShippableAdapter.prototype.deleteResourceById =
      );
    };
 
+ShippableAdapter.prototype.getRuns =
+ function (query, callback) {
+   this.get(
+     util.format('/runs?%s', query),
+     callback
+   );
+ };
+
+ShippableAdapter.prototype.getRunById =
+ function (id, callback) {
+   this.get(
+     util.format('/runs/%s', id),
+     callback
+   );
+ };
+
+ShippableAdapter.prototype.postRuns =
+ function (json, callback) {
+   this.post(
+     '/runs',
+     json,
+     callback
+   );
+ };
+
+ShippableAdapter.prototype.putRunsById =
+ function (id, json, callback) {
+   this.put(
+     util.format('/runs/%s', id),
+     json,
+     callback
+   );
+ };
+
+
+ShippableAdapter.prototype.deleteRunsByPipelineId =
+ function (id, callback) {
+   this.delete(
+     util.format('/pipelines/%s/runs', id),
+     callback
+   );
+ };
+
+
 ShippableAdapter.prototype.get =
   function (relativeUrl, callback) {
     var bag = {};

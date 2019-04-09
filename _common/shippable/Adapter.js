@@ -312,6 +312,47 @@ ShippableAdapter.prototype.deleteRunsByPipelineId =
    );
  };
 
+ShippableAdapter.prototype.postPipelineSteps =
+  function (json, callback) {
+    this.post(
+      '/pipelineSteps',
+      json,
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.getPipelineSteps =
+  function (query, callback) {
+    this.get(
+      util.format('/pipelineSteps?%s', query),
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.getPipelineStepsById =
+  function (id, callback) {
+    this.get(
+      util.format('/pipelineSteps/%s', id),
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.putPipelineStepsById =
+  function (id, json, callback) {
+    this.put(
+      util.format('/pipelineSteps/%s', id),
+      json,
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.deletePipelineStepsById =
+  function (id, callback) {
+    this.get(
+      util.format('/pipelineSteps/%s', id),
+      callback
+    );
+  };        
 
 ShippableAdapter.prototype.get =
   function (relativeUrl, callback) {

@@ -14,7 +14,6 @@ describe(test,
     var project = {};
     var integration = {};
     var pipelineSource = {};
-    var resource = {};
     var pipeline = {}
 
     this.timeout(0);
@@ -38,7 +37,7 @@ describe(test,
       }
     );
 
-    it('1. User gets projects to add pipelineSources',
+    it('1.User gets projects to add pipelineSources',
       function getProject(done) {
         userApiAdapter.getProjects('',
           function(err, prjs) {
@@ -137,7 +136,7 @@ describe(test,
       }
     );
 
-    it('1. User add new Runs',
+    it('5. User add new Runs',
       function (done) {
         var body = {
           "pipelineId": pipeline.id,
@@ -160,7 +159,7 @@ describe(test,
       }
     );
 
-    it('2. User can get their Runs by Id',
+    it('6. User can get their Runs by Id',
       function (done) {
         userApiAdapter.getRunById(run.id,
           function (err, rSourceId) {
@@ -178,7 +177,7 @@ describe(test,
       }
     );
 
-    it('3. User can update the Run by Id',
+    it('7. User can update the Run by Id',
       function (done) {
         var body = {
              "statusCode":1004
@@ -198,7 +197,7 @@ describe(test,
       }
     );
 
-    it('4. User can get their Runs',
+    it('8. User can get their Runs',
       function (done) {
         userApiAdapter.getRuns('',
           function (err, runs) {
@@ -216,7 +215,7 @@ describe(test,
       }
     );
 
-    it('5. Id field in run API shouldnot be null and should be a integer type',
+    it('9. Id field in run API shouldnot be null and should be a integer type',
       function (done) {
         assert.isNotNull(run.id, 'Id cannot be null');
         assert.equal(typeof(run.id), 'number');
@@ -224,7 +223,7 @@ describe(test,
       }
     );
 
-    it('6. PipelineId field in run API shouldnot be null and should be a integer type',
+    it('10. PipelineId field in run API shouldnot be null and should be a integer type',
       function (done) {
         assert.isNotNull(run.pipelineId, 'Pipeline Id cannot be null');
         assert.equal(typeof(run.pipelineId), 'number');
@@ -233,7 +232,7 @@ describe(test,
     );
 
 
-    it('7. ProjectId field in run API shouldnot be null and should be a integer type',
+    it('11. ProjectId field in run API shouldnot be null and should be a integer type',
       function (done) {
         assert.isNotNull(run.projectId, 'Project Id cannot be null');
         assert.equal(typeof(run.projectId), 'number');
@@ -241,7 +240,7 @@ describe(test,
       }
     );
 
-    it('8.  User can delete run by pipelineId',
+    it('12. User can delete run by pipelineId',
       function (done) {
          userApiAdapter.deleteRunsByPipelineId(pipeline.id,
            function (err, result) {
@@ -259,7 +258,7 @@ describe(test,
        }
     );
 
-    it('9.  User can delete pipelines by Id',
+    it('13. User can delete pipelines by Id',
       function (done) {
          userApiAdapter.deletePipelineById(pipeline.id,
             function (err, res) {
@@ -276,7 +275,7 @@ describe(test,
        }
     );
 
-    it('10. User can delete pipelineSource by Id',
+    it('14. User can delete pipelineSource by Id',
       function (done) {
          userApiAdapter.deletePipelineSourcesById(pipelineSource.id,
            function (err, res) {
@@ -293,7 +292,7 @@ describe(test,
        }
     );
 
-    it('11. User can deletes integration by Id',
+    it('15. User can deletes integration by Id',
       function (done) {
         userApiAdapter.deleteIntegrationById(integration.id,
           function (err, ints) {

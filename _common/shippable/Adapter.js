@@ -352,7 +352,49 @@ ShippableAdapter.prototype.deletePipelineStepsById =
       util.format('/pipelineSteps/%s', id),
       callback
     );
-  };        
+  };
+
+ShippableAdapter.prototype.postSteps =
+  function (json, callback) {
+    this.post(
+      '/steps',
+      json,
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.putStepById =
+  function (id, json, callback) {
+    this.put(
+      util.format('/steps/%s', id),
+      json,
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.getSteps =
+  function (query, callback) {
+    this.get(
+      '/steps?' + query,
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.getStepsById =
+  function (id, callback) {
+    this.get(
+      util.format('/steps/%s', id),
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.deleteStepById =
+  function (id, callback) {
+    this.delete(
+      util.format('/steps/%s', id),
+      callback
+    );
+  };
 
 ShippableAdapter.prototype.get =
   function (relativeUrl, callback) {

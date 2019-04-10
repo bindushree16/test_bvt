@@ -150,9 +150,7 @@ describe(test,
               "name": "in_trigger_step",
               "type": "runSh"
               }
-          }
-        };
-
+          };
         userApiAdapter.postPipelineSteps(body,
           function (err, psteps) {
             if (err)
@@ -275,7 +273,7 @@ describe(test,
       function (done) {
         assert.equal(typeof(pipelineSteps.configPropertyBag), 'object');
         return done();
-      } 
+      }
     );
 
     it('16. PipelineStepsTypeCode field in pipelineSteps API shouldnot be null and should be an integer type',
@@ -417,7 +415,7 @@ describe(test,
          );
        }
     );
-  
+
     it('32.  User can delete pipelineSource by Id',
       function (done) {
          userApiAdapter.deletePipelineSourcesById(pipelineSources.id,
@@ -435,7 +433,7 @@ describe(test,
          );
        }
     );
-  
+
     it('33. User can deletes integration by Id',
       function (done) {
         userApiAdapter.deleteIntegrationById(integration.id,

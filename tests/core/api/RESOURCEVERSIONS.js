@@ -12,6 +12,7 @@ describe(test,
     var project = [];
     var pipelineSource = [];
     var integration = [];
+    var dockerIntegration = [];
     var resource = [];
     var resourceVersion = [];
 
@@ -87,7 +88,49 @@ describe(test,
       }
     );
 
-    it('3. User posts PipelineSources to add pipelines',
+    it('3. User posts docker registry integration to add resources',
+      function (done) {
+        var body = {
+          "masterIntegrationId": 77,
+          "name": global.GH_USR_API_INTEGRATION_NAME,
+          "projectId": project.id,
+          "formJSONValues": [
+            {
+               "label": "email",
+               "value": "shptest@shippable.com"
+            },
+            {
+               "label": "password",
+               "value": "Qhode12345"
+            },
+            {
+               "label": "url",
+               "value": "https://index.docker.io/v1/"
+            },
+            {
+               "label": "username",
+               "value": "testDoc"
+            }
+          ]
+        };
+
+        userApiAdapter.postIntegration(body,
+          function (err, ints) {
+            if (err)
+              return done(
+                new Error(
+                  util.format('User cannot add integration',
+                    util.inspect(err))
+                )
+              );
+            dockerIntegration = ints;
+            return done();
+          }
+        );
+      }
+    );
+  
+    it('4. User posts PipelineSources',
       function (done) {
         var body = {
           "projectId": project.id,
@@ -112,29 +155,42 @@ describe(test,
       }
     );
 
-    it('4. User gets resources from pipeline source',
-      function (done) {        
-        userApiAdapter.getResources('',
+    it('5. User creates new image resource',
+      function (done) {
+        var body = {
+          "staticPropertyBag": {
+            "imageName": "shippabledocker/sample_python"
+          },
+          "name": "docker-pytimage",
+          "integrationId": dockerIntegration.id,
+          "typeCode": 1001,
+          "projectId": project.id,
+          "pipelineSourceId": pipelineSource.id
+        };
+        userApiAdapter.postResource(body,
           function (err, res) {
             if (err)
               return done(
                 new Error(
-                  util.format('User cannot get resources',
+                  util.format('User cannot post resources',
                     util.inspect(err))
                 )
               );
-            resource = _.first(res);
+            resource = res;
             return done();
           }
         );
       }
     );
-  
-    it('5. User can post resource versions',
+        
+    it('6. User can post resource versions',
       function (done) {
         var body = {
+          "contentPropertyBag": {
+            "imageTag": "latest1"
+          },
           "projectId": project.id,
-          "resourceId": resource.id
+          "resourceId": resource.id          
         };
         userApiAdapter.postResourceVersion(body,
           function (err, resVer) {
@@ -152,7 +208,7 @@ describe(test,
       }
     );
   
-    it('6. User can get resource version by Id',
+    it('7. User can get resource version by Id',
       function (done) {
         userApiAdapter.getResourceVersionById(resourceVersion.id,
           function (err, resVer) {
@@ -170,7 +226,7 @@ describe(test,
       }
     );
 
-    it('7. User can get their resource versions',
+    it('8. User can get their resource versions',
       function (done) {
         userApiAdapter.getResourceVersions('',
           function (err, resVers) {
@@ -188,7 +244,7 @@ describe(test,
       }
     );
   
-    it('8. Id field in resource version API shouldnot be null and should be an integer type',
+    it('9. Id field in resource version API shouldnot be null and should be an integer type',
       function (done) {
         assert.isNotNull(resourceVersion.id, 'Resource version Id field cannot be null');
         assert.equal(typeof(resourceVersion.id), 'number');
@@ -196,7 +252,7 @@ describe(test,
       }
     );
 
-    it('9. ProjectId field in resource version API shouldnot be null and should be an integer type',
+    it('10. ProjectId field in resource version API shouldnot be null and should be an integer type',
       function (done) {
         assert.isNotNull(resourceVersion.projectId, 'Project Id field cannot be null');
         assert.equal(typeof(resourceVersion.projectId), 'number');
@@ -204,7 +260,7 @@ describe(test,
       }
     );
 
-    it('10. ResourceId field in resource version API shouldnot be null and should be an integer type',
+    it('11. ResourceId field in resource version API shouldnot be null and should be an integer type',
       function (done) {
         assert.isNotNull(resourceVersion.resourceId, 'Resource Id field cannot be null');
         assert.equal(typeof(resourceVersion.resourceId), 'number');
@@ -212,21 +268,21 @@ describe(test,
       }
     );
   
-    it('11. ContentPropertyBag field in resource version API should be an object type',
+    it('12. ContentPropertyBag field in resource version API should be an object type',
       function (done) {
         assert.equal(typeof(resourceVersion.contentPropertyBag), 'object'); 
         return done();
       }
     );
   
-    it('12. CreatedByStepId field in resource version API should be an object type',
+    it('13. CreatedByStepId field in resource version API should be an object type',
       function (done) {
         assert.equal(typeof(resourceVersion.createdByStepId), 'object'); 
         return done();
       }
     );
   
-    it('13. CreatedAt field in resource version API shouldnot be null and should be a string type',
+    it('14. CreatedAt field in resource version API shouldnot be null and should be a string type',
       function (done) {
         assert.isNotNull(resourceVersion.createdAt, 'Created At field cannot be null');
         assert.equal(typeof(resourceVersion.createdAt), 'string'); 
@@ -234,7 +290,7 @@ describe(test,
       }
     );
   
-    it('14. UpdatedAt field in resource version API shouldnot be null and should be a string type',
+    it('15. UpdatedAt field in resource version API shouldnot be null and should be a string type',
       function (done) {
         assert.isNotNull(resourceVersion.updatedAt, 'Updated At field cannot be null');
         assert.equal(typeof(resourceVersion.updatedAt), 'string'); 
@@ -242,7 +298,7 @@ describe(test,
       }
     );
   
-    it('15.  User can delete resource version by Id',
+    it('16.  User can delete resource version by Id',
       function (done) {
         userApiAdapter.deleteResourceVersionById(resourceVersion.id,
           function (err, res) {
@@ -259,7 +315,7 @@ describe(test,
       }
     );
   
-    it('16.  User can delete resource version by resource Id',
+    it('17.  User can delete resource version by resource Id',
       function (done) {
          userApiAdapter.deleteResourceVersionByResourceId(resource.id,
            function (err, res) {
@@ -277,7 +333,7 @@ describe(test,
        }
     );
   
-    it('17. User can delete pipelineSource by Id',
+    it('18. User can delete pipelineSource by Id',
       function (done) {        
         userApiAdapter.deletePipelineSourcesById(pipelineSource.id,
           function (err, res) {
@@ -294,19 +350,27 @@ describe(test,
       }
     );
   
-    it('18. User can deletes integration by Id',
+    it('19. User can delete integrations by Id',
       function (done) {
-        userApiAdapter.deleteIntegrationById(integration.id,
-          function (err, ints) {
-            if (err || _.isEmpty(ints))
-              return done(
-                new Error(
-                  util.format('User cannot delete integration by Id',
-                    integration.id, err)
-                )
+        var intIds = [integration.id, dockerIntegration.id];
+        async.each(intIds,
+          function (intId, nextIntId) {
+            var json = intId;
+            userApiAdapter.deleteIntegrationById(json,
+              function (err, res) {
+                if (err)
+                  return nextIntId(
+                    new Error(
+                      util.format('User cannot delete the integration with id:%s %s',
+                        intId, util.inspect(response))
+                    )
+                  );
+                  return nextIntId();
+                }
               );
-
-            return done();
+            },
+          function (err) {
+            return done(err);
           }
         );
       }

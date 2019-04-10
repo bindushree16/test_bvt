@@ -2,7 +2,7 @@
 
 var testSetup = require('../../../testSetup.js');
 
-var testSuite = 'API_steps';
+var testSuite = 'API_STEPS';
 var testSuiteDesc = 'Github Organization steps API tests';
 var test = util.format('%s - %s', testSuite, testSuiteDesc);
 
@@ -141,7 +141,6 @@ describe(test,
     it('5. User can add new PipelineSteps',
       function (done) {
         var body = {
-          "id": 4,
           "name": global.GH_USR_API_PIPELINESTEPS_NAME,
           "affinityGroup": "test_group",
           "typeCode": 2007,
@@ -150,10 +149,7 @@ describe(test,
           "pipelineId": pipeline.id,
           "yml": {
               "name": "in_trigger_step",
-              "type": "runSh",
-              "configuration": {
-                  "affinityGroup": "test_group"
-              }
+              "type": "runSh"
           }
         };
         userApiAdapter.postPipelineSteps(body,
@@ -271,8 +267,6 @@ describe(test,
                 )
               );
              step = _.first(result);
-
-
             assert.isNotEmpty(result, 'User cannot find the steps');
             return done();
           }

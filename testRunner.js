@@ -39,14 +39,14 @@ function testRun(next) {
 
   // takes a list of files/ directories for mocha and runs all in series
   var tests = [
-     'tests/core/api/PROJECTS.js',
-     'tests/core/api/SYSTEMCODES.js',
-     'tests/core/api/INTEGRATIONS.js',
-     'tests/core/api/PIPELINESOURCES.js',
-     'tests/core/api/RESOURCES.js',
-     'tests/core/api/PIPELINES.js',
-     'tests/core/api/RUNS.js',
-     'tests/core/api/PIPELINESTEPS.js',
+     // 'tests/core/api/PROJECTS.js',
+     // 'tests/core/api/SYSTEMCODES.js',
+     // 'tests/core/api/INTEGRATIONS.js',
+     // 'tests/core/api/PIPELINESOURCES.js',
+     // 'tests/core/api/RESOURCES.js',
+     // 'tests/core/api/PIPELINES.js',
+     // 'tests/core/api/RUNS.js',
+     // 'tests/core/api/PIPELINESTEPS.js',
      'tests/core/api/STEPS.js'
   ];
 

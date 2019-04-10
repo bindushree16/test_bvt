@@ -55,7 +55,7 @@ describe(test,
         var body = {
          "masterIntegrationId": 20,
          "masterIntegrationName": "github",
-         "name": 'git2',
+         "name": 'git42',
          "projectId": project.id,
          "formJSONValues": [
              {

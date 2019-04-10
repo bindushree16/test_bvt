@@ -220,13 +220,13 @@ describe(test,
         return done();
       }
     );
-
-    it('11. configPropertyBag field in resources API should be a string',
-      function (done) {
-        assert.equal(typeof(resource.configPropertyBag), 'undefined');
-        return done();
-      }
-    );
+    
+    // it('11. configPropertyBag field in resources API should be a string',
+    //   function (done) {
+    //     assert.equal(typeof(resource.configPropertyBag), 'undefined');
+    //     return done();
+    //   }
+    // );
 
     it('12. systemPropertyBag field in resources API should be a string',
       function (done) {

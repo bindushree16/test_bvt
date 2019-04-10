@@ -25,21 +25,21 @@ describe(test,
               return done(err);
             }
 
-            userApiAdapter =
-              global.newApiAdapterByToken(global.SHIPPABLE_API_TOKEN);
-            userApiAdapter.getProjects('',
-              function(err, prjs) {
-                if (err || _.isEmpty(prjs))
-                  return done(
-                    new Error(
-                      util.format('Project list is empty',
-                        query, err)
+          userApiAdapter =
+            global.newApiAdapterByToken(global.SHIPPABLE_API_TOKEN);
+              userApiAdapter.getProjects('',
+                function(err, prjs) {
+                  if (err || _.isEmpty(prjs))
+                    return done(
+                      new Error(
+                        util.format('Project list is empty',
+                          query, err)
                       )
                     );
-                project = _.first(prjs);
-                return done();
-              }
-            );
+                  project = _.first(prjs);
+                  return done();
+                }
+              );
           }
         );
       }
@@ -118,7 +118,6 @@ describe(test,
                     integration.id, err)
                 )
               );
-
             return done();
           }
         );
@@ -147,12 +146,12 @@ describe(test,
 
 
     it('4. Id field in integration API shouldnot be null and should be an integer type',
-       function (done) {
-         assert.isNotNull(integration.id, 'integration Id cannot be null');
-         assert.equal(typeof(integration.id), 'number');
-         return done();
-         }
-     );
+      function (done) {
+        assert.isNotNull(integration.id, 'integration Id cannot be null');
+        assert.equal(typeof(integration.id), 'number');
+        return done();
+      }
+    );
 
     it('5. masterintegrationId field in integration API shouldnot be null and should be a integer type',
       function (done) {
@@ -193,12 +192,12 @@ describe(test,
       }
     );
 
-    it('10. integrationProviderId field in integration API should be a integer type',
-      function (done) {
-        console.log("typeof(integration.ProviderId)", typeof(integration.ProviderId));
-        return done();
-      }
-    );
+    // it('10. integrationProviderId field in integration API should be a integer type',
+    //   function (done) {
+    //     console.log("typeof(integration.ProviderId)", typeof(integration.ProviderId));
+    //     return done();
+    //   }
+    // ); commenting since type is undefined as of now. Will uncomment once it is fixed
 
     it('11.integrationCreatedByUserName field in integration API shouldnot be null and should be a string type',
       function (done) {
@@ -222,7 +221,7 @@ describe(test,
     //     assert.equal(typeof(integration.createdBy), 'number');
     //     return done();
     //   }
-    // );
+    // ); commenting since type is undefined as of now. Will uncomment once it is fixed
     //
     // it('14. integrationUpdatedBy field in integration API shouldnot be null and should be a integer type',
     //   function (done) {
@@ -230,7 +229,7 @@ describe(test,
     //     assert.equal(typeof(integration.updatedBy),'number');
     //     return done();
     //   }
-    // );
+    // ); commenting since type is undefined as of now. Will uncomment once it is fixed
 
     it('15. integrationCreatedAt field in integration API shouldnot be null and should be a string type',
       function (done) {

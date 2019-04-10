@@ -315,6 +315,141 @@ ShippableAdapter.prototype.putResourceById =
      );
    };
 
+ShippableAdapter.prototype.deleteResourceById =
+ function (id, callback) {
+   this.delete(
+     util.format('/resources/%s', id),
+     callback
+     );
+   };
+
+ShippableAdapter.prototype.getRuns =
+ function (query, callback) {
+   this.get(
+     util.format('/runs?%s', query),
+     callback
+   );
+ };
+
+ShippableAdapter.prototype.getRunById =
+ function (id, callback) {
+   this.get(
+     util.format('/runs/%s', id),
+     callback
+   );
+ };
+
+ShippableAdapter.prototype.postRuns =
+ function (json, callback) {
+   this.post(
+     '/runs',
+     json,
+     callback
+   );
+ };
+
+ShippableAdapter.prototype.putRunsById =
+ function (id, json, callback) {
+   this.put(
+     util.format('/runs/%s', id),
+     json,
+     callback
+   );
+ };
+
+
+ShippableAdapter.prototype.deleteRunsByPipelineId =
+ function (id, callback) {
+   this.delete(
+     util.format('/pipelines/%s/runs', id),
+     callback
+   );
+ };
+
+ShippableAdapter.prototype.postPipelineSteps =
+  function (json, callback) {
+    this.post(
+      '/pipelineSteps',
+      json,
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.getPipelineSteps =
+  function (query, callback) {
+    this.get(
+      util.format('/pipelineSteps?%s', query),
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.getPipelineStepsById =
+  function (id, callback) {
+    this.get(
+      util.format('/pipelineSteps/%s', id),
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.putPipelineStepsById =
+  function (id, json, callback) {
+    this.put(
+      util.format('/pipelineSteps/%s', id),
+      json,
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.deletePipelineStepsById =
+  function (id, callback) {
+    this.get(
+      util.format('/pipelineSteps/%s', id),
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.postSteps =
+  function (json, callback) {
+    this.post(
+      '/steps',
+      json,
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.putStepById =
+  function (id, json, callback) {
+    this.put(
+      util.format('/steps/%s', id),
+      json,
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.getSteps =
+  function (query, callback) {
+    this.get(
+      '/steps?' + query,
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.getStepsById =
+  function (id, callback) {
+    this.get(
+      util.format('/steps/%s', id),
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.deleteStepById =
+  function (id, callback) {
+    this.delete(
+      util.format('/steps/%s', id),
+      callback
+    );
+  };
+
 ShippableAdapter.prototype.get =
   function (relativeUrl, callback) {
     var bag = {};

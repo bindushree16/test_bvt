@@ -450,14 +450,22 @@ ShippableAdapter.prototype.deleteStepById =
     );
   };
 
-  ShippableAdapter.prototype.postSteplet =
-  function (json, callback) {
-    this.post(
-      '/steplets',
-      json,
+ShippableAdapter.prototype.deleteStepsByPipelineId =
+  function (id, callback) {
+    this.delete(
+      util.format('/pipelines/%s/steps', id),
       callback
     );
   };
+
+ShippableAdapter.prototype.postSteplet =
+function (json, callback) {
+  this.post(
+    '/steplets',
+    json,
+    callback
+  );
+};
 
 ShippableAdapter.prototype.putStepletById =
   function (id, json, callback) {
@@ -499,6 +507,32 @@ ShippableAdapter.prototype.getStepletById =
       callback
     );
   };
+
+  ShippableAdapter.prototype.getStepConsolesByStepsId =
+    function (id, callback) {
+      this.get(
+        util.format('/steps/%s/consoles', id),
+        callback
+      );
+    };
+
+ShippableAdapter.prototype.deleteStepConsolesByPipelineId =
+  function (id, callback) {
+    this.delete(
+      util.format('/pipelines/%s/stepConsoles', id),
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.postStepConsoles =
+  function (json, callback) {
+    this.post(
+      '/stepConsoles',
+      json,
+      callback
+    );
+  };
+
 
 ShippableAdapter.prototype.get =
   function (relativeUrl, callback) {

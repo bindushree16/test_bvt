@@ -11,6 +11,7 @@ describe(test,
   function () {
     var userApiAdapter = null;
     var steplet = [];
+    var steplet2 = {};
     var project = {};
     var integration = {};
     var pipelineSource = {};
@@ -243,7 +244,33 @@ describe(test,
       }
     );
 
-    it('9. User can get their steplets by Id',
+    it('9. User can add new steplets',
+      function (done) {
+        var body = {
+          "projectId": project.id,
+          "pipelineId": pipeline.id,
+          "stepId": step.id,
+          "stepletNumber": 14,
+          "statusCode": global.GH_STATUS_CODE
+        };
+        userApiAdapter.postSteplet(body,
+          function (err, steplets) {
+            if (err)
+              return done(
+                new Error(
+                  util.format('User cannot add Steplet',
+                    util.inspect(err))
+                 )
+               );
+             steplet2 = steplets;
+             return done();
+          }
+        );
+      }
+    );
+
+
+    it('10. User can get their steplets by Id',
       function (done) {
         userApiAdapter.getStepletById(steplet.id,
           function (err, steplets) {
@@ -261,10 +288,10 @@ describe(test,
       }
     );
 
-    it('10. User can update the steplets by Id',
+    it('11. User can update the steplets by Id',
       function (done) {
         var body = {
-           "statusCode": global.GH_STATUS_CODE
+           "statusCode": 4002
         };
         userApiAdapter.putStepletById(steplet.id, body,
           function (err, steplets) {
@@ -281,7 +308,7 @@ describe(test,
       }
     );
 
-    it('11. User can get their steplets',
+    it('12. User can get their steplets',
       function (done) {
         userApiAdapter.getSteplets('',
           function (err, steplets) {
@@ -299,7 +326,7 @@ describe(test,
       }
     );
 
-    it('12. stepletsId in steplets API shouldnot be null and should be a integer type',
+    it('13. stepletsId in steplets API shouldnot be null and should be a integer type',
      function (done) {
         assert.isNotNull(steplet.id, 'Id cannot be null');
         assert.equal(typeof(steplet.id), 'number');
@@ -307,99 +334,78 @@ describe(test,
       }
     );
 
-    it('13. stepletsProjectId in steplets API shouldnot be null and should be a integer type',
+    it('14. stepletsProjectId in steplets API shouldnot be null and should be a integer type',
       function (done) {
-        assert.isNotNull(steplet.id, 'ProjectId cannot be null');
-        assert.equal(typeof(steplet.id), 'number');
+        assert.isNotNull(steplet.projectId, 'ProjectId cannot be null');
+        assert.equal(typeof(steplet.projectId), 'number');
         return done();
       }
     );
 
-    it('14. stepletsStepId in steplets API shouldnot be null and should be a integer type',
+    it('15. stepletsStepId in steplets API shouldnot be null and should be a integer type',
       function (done) {
-        assert.isNotNull(steplet.id, 'StepId cannot be null');
-        assert.equal(typeof(steplet.id), 'number');
+        assert.isNotNull(steplet.stepId, 'StepId cannot be null');
+        assert.equal(typeof(steplet.stepId), 'number');
         return done();
       }
     );
 
-    it('15. stepletsStepletNumber in steplets API shouldnot be null and should be a integer type',
+    it('16. stepletsStepletNumber in steplets API shouldnot be null and should be a integer type',
       function (done) {
-        assert.isNotNull(steplet.id, 'Steplet Number cannot be null');
-        assert.equal(typeof(steplet.id), 'number');
+        assert.isNotNull(steplet.stepletNumber, 'Steplet Number cannot be null');
+        assert.equal(typeof(steplet.stepletNumber), 'number');
         return done();
       }
     );
 
-   it('16. stepletsStatusCode in steplets API shouldnot be null and should be a integer type',
+   it('17. stepletsStatusCode in steplets API should be a integer type',
       function (done) {
-        assert.isNotNull(steplet.id, 'StatusCode cannot be null');
-        assert.equal(typeof(steplet.id), 'number');
+        assert.isNotNull(steplet.statusCode, 'StatusCode cannot be null');
+        assert.equal(typeof(steplet.statusCode), 'number');
         return done();
       }
     );
 
-    it('17. stepletsStartedAt in stepLets API shouldnot be null and should be a integer type',
-     function (done) {
-        assert.isNotNull(steplet.id, 'StartedAt cannot be null');
-        assert.equal(typeof(steplet.id), 'number');
+    // it('18. stepletsStartedAt in steplets API should be a string type',
+    //  function (done) {
+    //     assert.equal(typeof(steplet.startedAt), 'string');
+    //     return done();
+    //   }
+    // );
+    //
+    // it('19. stepletsEndedAt in steplets API should be a string type',
+    //   function (done) {
+    //     assert.equal(typeof(steplet.endedAt), 'string');
+    //     return done();
+    //   }
+    // );
+    //
+    // it('20. stepletSQueuedAt in stepLets API should be a string type',
+    //   function (done) {
+    //     assert.equal(typeof(steplet.queuedAt), 'string');
+    //     return done();
+    //   }
+    // );
+
+    it('21. stepletsCreatedAt in steplets API should be a string type',
+      function (done) {
+        assert.isNotNull(steplet.createdAt, 'CreatedAt cannot be null');
+        assert.equal(typeof(steplet.createdAt), 'string');
         return done();
       }
     );
 
-    it('18. stepletsEndedAt in stepLets API shouldnot be null and should be a integer type',
+    it('21. stepletsUpdatedAt in steplets API should be a string type',
       function (done) {
-        assert.isNotNull(steplet.id, 'EndedAt cannot be null');
-        assert.equal(typeof(steplet.id), 'number');
+        assert.isNotNull(steplet.updatedAt, 'UpdatedAt cannot be null');
+        assert.equal(typeof(steplet.updatedAt), 'string');
         return done();
       }
     );
 
-    it('19. stepletSQueuedAt in stepLets API shouldnot be null and should be a integer type',
+    it('24. User can delete steplets by Id',
       function (done) {
-        assert.isNotNull(steplet.id, 'QueuedAt cannot be null');
-        assert.equal(typeof(steplet.id), 'number');
-        return done();
-      }
-    );
-
-    it('20. stepletsCreatedAt in steplets API shouldnot be null and should be a integer type',
-      function (done) {
-        assert.isNotNull(steplet.id, 'CreatedAt cannot be null');
-        assert.equal(typeof(steplet.id), 'number');
-        return done();
-      }
-    );
-
-    it('21. stepletsUpdatedAt in steplets API shouldnot be null and should be a integer type',
-      function (done) {
-        assert.isNotNull(steplet.id, 'UpdatedAt cannot be null');
-        assert.equal(typeof(steplet.id), 'number');
-        return done();
-      }
-    );
-
-    it('22. User can delete by Steplets By Pipeline Id',
-      function (done) {
-         userApiAdapter.deleteStepletsByPipelineId(pipeline.id,
-           function (err, result) {
-             if (err || _.isEmpty(result))
-               return done(
-                 new Error(
-                   util.format('User cannot delete Runs by steplet Pipeline Id',
-                     run.id, err)
-                 )
-                );
-
-             return done();
-           }
-         );
-       }
-    );
-
-    it('23. User can delete steplets by Id',
-      function (done) {
-        userApiAdapter.deleteStepletById(steplet.id,
+        userApiAdapter.deleteStepletById(steplet2.id,
         function (err, result) {
           if (err || _.isEmpty(result))
               return done(
@@ -415,77 +421,23 @@ describe(test,
       }
     );
 
-    it('24. User can delete step by Id',
+    it('23. User can delete by Steplets By Pipeline Id',
       function (done) {
-        userApiAdapter.deleteStepById(step.id,
-          function (err, result) {
-            if (err || _.isEmpty(result))
-              return done(
-                new Error(
-                  util.format('User cannot delete step by Id',
-                    steps.id, err)
-                )
-              );
-
-            return done();
-          }
-        );
-      }
-    );
-
-    it('25. User can delete by runs By Pipeline Id',
-      function (done) {
-         userApiAdapter.deleteRunsByPipelineId(pipeline.id,
+         userApiAdapter.deleteStepletsByPipelineId(pipeline.id,
            function (err, result) {
              if (err || _.isEmpty(result))
                return done(
                  new Error(
-                   util.format('User cannot delete Runs by pipeline Id',
+                   util.format('User cannot delete Runs by steplet Pipeline Id',
                      run.id, err)
                  )
                 );
-
              return done();
            }
          );
        }
     );
-
-    it('26. User can deletes pipelineSteps by Id',
-         function (done) {
-           userApiAdapter.deletePipelineStepsById(pipelineSteps.id,
-             function (err, psteps) {
-               if (err || _.isEmpty(psteps))
-                 return done(
-                   new Error(
-                     util.format('User cannot delete pipelineSteps by Id',
-                     pipelineSteps.id, err)
-                  )
-                );
-              return done();
-          }
-        );
-      }
-    );
-
-    it('27. User can delete pipelines by Id',
-      function (done) {
-         userApiAdapter.deletePipelineById(pipeline.id,
-            function (err, res) {
-             if (err || _.isEmpty(res))
-               return done(
-                 new Error(
-                   util.format('User cannot delete Pipelines by Id',
-                     pipeline.id, err)
-                 )
-                );
-             return done();
-           }
-         );
-       }
-    );
-
-    it('28. User can delete pipelineSource by Id',
+    it('24. User can delete pipelineSource by Id',
       function (done) {
          userApiAdapter.deletePipelineSourcesById(pipelineSource.id,
            function (err, res) {
@@ -502,7 +454,7 @@ describe(test,
        }
     );
 
-    it('29. User can deletes integration by Id',
+    it('24. User can deletes integration by Id',
       function (done) {
         userApiAdapter.deleteIntegrationById(integration.id,
           function (err, ints) {

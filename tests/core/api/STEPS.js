@@ -15,6 +15,7 @@ describe(test,
     var pipelineSource = {};
     var pipeline = {};
     var pipelineSteps = {};
+    var step = [];
     var run = {}
 
     this.timeout(0);
@@ -61,7 +62,7 @@ describe(test,
         var body = {
           "masterIntegrationId": 20,
           "masterIntegrationName": "github",
-          "name": 'w16',
+          "name": 'w16ww',
           "projectId": project.id,
           "formJSONValues": [
               {

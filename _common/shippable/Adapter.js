@@ -450,6 +450,56 @@ ShippableAdapter.prototype.deleteStepById =
     );
   };
 
+  ShippableAdapter.prototype.postSteplet =
+  function (json, callback) {
+    this.post(
+      '/steplets',
+      json,
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.putStepletById =
+  function (id, json, callback) {
+    this.put(
+      util.format('/steplets/%s', id),
+      json,
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.deleteStepletById =
+  function (StepLetId, callback) {
+    this.delete(
+      util.format('/steplets/%s', StepLetId),
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.deleteStepletsByPipelineId =
+ function (id, callback) {
+   this.delete(
+     util.format('/pipelines/%s/Steplets', id),
+     callback
+   );
+ };
+
+ShippableAdapter.prototype.getSteplets =
+  function (query, callback) {
+    this.get(
+      util.format('/steplets?%s', query),
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.getStepletById =
+  function (id, callback) {
+    this.get(
+      util.format('/steplets/%s', id),
+      callback
+    );
+  };
+
 ShippableAdapter.prototype.get =
   function (relativeUrl, callback) {
     var bag = {};

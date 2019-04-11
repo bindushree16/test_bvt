@@ -41,6 +41,9 @@ global.GH_USR_API_PIPELINESOURCES_INTEGRATION_NAME= process.env.GH_USR_API_PIPEL
 global.GH_USR_API_PIPELINESTEPS_NAME= process.env.GH_USR_API_PIPELINESTEPS_NAME
 global.GH_USR_API_PIPELINESTEPS_RENAME= process.env.GH_USR_API_PIPELINESTEPS_RENAME
 
+global.GH_STEPLET_NUMBER=process.env.GH_STEPLET_NUMBER
+global.GH_STATUS_CODE=process.env.GH_STATUS_CODE
+
 // each test starts off as a new process, setup required constants
 function testSetup(done) {
   var who = util.format('%s|%s', self.name, testSetup.name);

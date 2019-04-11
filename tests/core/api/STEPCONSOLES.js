@@ -3,7 +3,7 @@
 var testSetup = require('../../../testSetup.js');
 
 var testSuite = 'API_STEPSCONSOLES';
-var testSuiteDesc = 'Github Organization steps API tests';
+var testSuiteDesc = 'Github Organization stepConsoles API tests';
 var test = util.format('%s - %s', testSuite, testSuiteDesc);
 
 describe(test,

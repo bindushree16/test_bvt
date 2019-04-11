@@ -49,7 +49,8 @@ function testRun(next) {
      'tests/core/api/PIPELINESTEPS.js',
      'tests/core/api/STEPS.js',
      'tests/core/api/RESOURCEVERSIONS.js',
-     'tests/core/api/STEPLETS.js'
+     'tests/core/api/STEPLETS.js',
+     'tests/core/api/STEPCONSOLES.js'
   ];
 
   async.eachSeries(tests,

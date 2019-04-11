@@ -483,60 +483,52 @@ describe(test,
       }
     );
 
-    it('36.  User can delete by runs',
+    it('36. user can add new steps',
       function (done) {
-         userApiAdapter.deleteRunsByPipelineId(pipeline.id,
-           function (err, result) {
-             if (err || _.isEmpty(result))
-               return done(
-                 new Error(
-                   util.format('User cannot delete Runs by pipelineId',
-                     run.id, err)
-                 )
-                );
-
-             return done();
-           }
-         );
-       }
+        var body = {
+          "projectId": project.id,
+          "name" : "vijay",
+          "pipelineId": pipeline.id,
+          "pipelineStepId": pipelineSteps.id,
+          "runId": run.id,
+          "typeCode" : 2007,
+          "statusCode": 4002
+        }
+        userApiAdapter.postSteps(body,
+          function (err, result) {
+            if (err)
+              return done(
+                new Error(
+                  util.format('User cannot add steps',
+                    util.inspect(err))
+                )
+              );
+            step = result;
+            return done();
+          }
+        );
+      }
     );
 
-    it('37. User can deletes pipelineSteps by Id',
-         function (done) {
-           userApiAdapter.deletePipelineStepsById(pipelineSteps.id,
-             function (err, psteps) {
-               if (err || _.isEmpty(psteps))
-                 return done(
-                   new Error(
-                     util.format('User cannot delete pipelineSteps by Id',
-                       pipelineSteps.id, err)
-                   )
-                 );
-
-               return done();
-             }
-           );
-         }
-      );
-
-    it('38.  User can delete pipelines by Id',
+    it('37. user can delete step by PipelineId',
       function (done) {
-         userApiAdapter.deletePipelineById(pipeline.id,
-            function (err, res) {
-             if (err || _.isEmpty(res))
-               return done(
-                 new Error(
-                   util.format('User cannot delete Pipelines by Id',
-                     pipeline.id, err)
-                 )
-                );
-             return done();
-           }
-         );
-       }
+        userApiAdapter.deleteStepsByPipelineId(step.id,
+          function (err, result) {
+            if (err || _.isEmpty(result))
+              return done(
+                new Error(
+                  util.format('User cannot delete step by PipelineId',
+                    step.id, err)
+                )
+              );
+
+            return done();
+          }
+        );
+      }
     );
 
-    it('39. User can delete pipelineSource by Id',
+    it('38. User can delete pipelineSource by Id',
       function (done) {
          userApiAdapter.deletePipelineSourcesById(pipelineSource.id,
            function (err, res) {
@@ -553,7 +545,7 @@ describe(test,
        }
     );
 
-    it('40. User can deletes integration by Id',
+    it('39. User can deletes integration by Id',
       function (done) {
         userApiAdapter.deleteIntegrationById(integration.id,
           function (err, ints) {

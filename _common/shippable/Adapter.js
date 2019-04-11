@@ -508,7 +508,7 @@ ShippableAdapter.prototype.getStepletById =
     );
   };
 
-  ShippableAdapter.prototype.getSByStepsId =
+  ShippableAdapter.prototype.getStepConsolesByStepsId =
     function (id, callback) {
       this.get(
         util.format('/steps/%s/consoles', id),

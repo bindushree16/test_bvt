@@ -252,7 +252,7 @@ describe(test,
 
     it('9. user can get their stepConsoles',
       function (done) {
-        userApiAdapter.getSByStepsId(step.id,
+        userApiAdapter.getStepConsolesByStepsId(step.id,
           function (err, result) {
             if (err)
               return done(

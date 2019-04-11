@@ -58,10 +58,18 @@ ShippableAdapter.prototype.postAuth = function (sysIntId, json, callback) {
   this.post(url, json, callback);
 };
 
-ShippableAdapter.prototype.deletePipelineById =
-  function (pipelineId, callback) {
-    this.delete(
-      util.format('/pipelines/%s', pipelineId),
+ShippableAdapter.prototype.getIntegrations =
+  function (query, callback) {
+    this.get(
+      util.format('/integrations?%s', query),
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.getIntegrationById =
+  function (id, callback) {
+    this.get(
+      util.format('/integrations/%s', id),
       callback
     );
   };
@@ -82,109 +90,6 @@ ShippableAdapter.prototype.getPipelineById =
     );
   };
 
-ShippableAdapter.prototype.getProjects =
-  function (query, callback) {
-    this.get(
-      util.format('/projects?%s', query),
-      callback
-    );
-  };
-
-ShippableAdapter.prototype.getProjectById =
-  function (id, callback) {
-    this.get(
-      util.format('/projects/%s', id),
-      callback
-    );
-  };
-
-ShippableAdapter.prototype.getSystemCodes =
-  function (query, callback) {
-    this.get(
-      '/systemCodes?' + query,
-      callback
-    );
-  };
-
-ShippableAdapter.prototype.postPipeline =
-  function (json, callback) {
-    this.post(
-      '/pipelines',
-      json,
-      callback
-    );
-  };
-
-ShippableAdapter.prototype.postProject =
-  function (json, callback) {
-    this.post(
-      '/projects',
-      json,
-      callback
-    );
-  };
-
-ShippableAdapter.prototype.putProjectById =
-  function (id, json, callback) {
-    this.put(
-      util.format('/projects/%s', id),
-      json,
-      callback
-    );
-  };
-
-ShippableAdapter.prototype.putPipelineById =
-  function (id, json, callback) {
-    this.put(
-      util.format('/pipelines/%s', id),
-      json,
-      callback
-    );
-  };
-
-ShippableAdapter.prototype.getIntegrations =
-  function (query, callback) {
-    this.get(
-      util.format('/integrations?%s', query),
-      callback
-    );
-  };
-
-ShippableAdapter.prototype.getIntegrationById =
-  function (id, callback) {
-    this.get(
-      util.format('/integrations/%s', id),
-      callback
-    );
-  };
-
-ShippableAdapter.prototype.postIntegration =
-  function (json, callback) {
-    this.post(
-      '/integrations',
-       json,
-       callback
-    );
-  };
-
-ShippableAdapter.prototype.putIntegrationById =
-  function (id, json, callback) {
-    this.put(
-      util.format('/integrations/%s', id),
-      json,
-      callback
-    );
-  };
-
-ShippableAdapter.prototype.deleteIntegrationById =
-  function (id, callback) {
-    this.delete(
-      util.format('/integrations/%s', id),
-      callback
-    );
-  };
-
-
 ShippableAdapter.prototype.getPipelineSources =
   function (query, callback) {
     this.get(
@@ -201,28 +106,18 @@ ShippableAdapter.prototype.getPipelineSourceById =
     );
   };
 
-ShippableAdapter.prototype.postPipelineSources =
-  function (json, callback) {
-    this.post(
-      '/pipelineSources',
-      json,
+ShippableAdapter.prototype.getProjects =
+  function (query, callback) {
+    this.get(
+      util.format('/projects?%s', query),
       callback
     );
   };
 
-ShippableAdapter.prototype.putPipelineSourcesById =
-  function (id, json, callback) {
-    this.put(
-      util.format('/pipelineSources/%s', id),
-      json,
-      callback
-    );
-  };
-
-ShippableAdapter.prototype.deletePipelineSourcesById =
+ShippableAdapter.prototype.getProjectById =
   function (id, callback) {
-    this.delete(
-      util.format('/pipelineSources/%s', id),
+    this.get(
+      util.format('/projects/%s', id),
       callback
     );
   };
@@ -243,10 +138,169 @@ ShippableAdapter.prototype.getResourceById =
     );
   };
 
+ShippableAdapter.prototype.getResourceVersions =
+  function (query, callback) {
+    this.get(
+      util.format('/resourceVersions/%s', query),
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.getResourceVersionById =
+  function (id, callback) {
+    this.get(
+      util.format('/resourceVersions/%s', id),
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.getSystemCodes =
+  function (query, callback) {
+    this.get(
+      '/systemCodes?' + query,
+      callback
+    );
+  };
+
+// #######################  POST  by alphabetical order  ######################
+
+ShippableAdapter.prototype.postIntegration =
+  function (json, callback) {
+    this.post(
+      '/integrations',
+       json,
+       callback
+    );
+  };
+
+ShippableAdapter.prototype.postPipeline =
+  function (json, callback) {
+    this.post(
+      '/pipelines',
+      json,
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.postPipelineSources =
+  function (json, callback) {
+    this.post(
+      '/pipelineSources',
+      json,
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.postProject =
+  function (json, callback) {
+    this.post(
+      '/projects',
+      json,
+      callback
+    );
+  };
+
 ShippableAdapter.prototype.postResource =
   function (json, callback) {
     this.post(
       '/resources',
+      json,
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.postResourceVersion =
+  function (json, callback) {
+    this.post(
+      '/resourceVersions',
+      json,
+      callback
+    );
+  };
+
+// #######################  DELETE  by alphabetical order  ###################
+
+ShippableAdapter.prototype.deleteIntegrationById =
+  function (id, callback) {
+    this.delete(
+      util.format('/integrations/%s', id),
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.deletePipelineById =
+  function (id, callback) {
+    this.delete(
+      util.format('/pipelines/%s', id),
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.deletePipelineSourcesById =
+  function (id, callback) {
+    this.delete(
+      util.format('/pipelineSources/%s', id),
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.deleteResourceById =
+ function (id, callback) {
+   this.delete(
+     util.format('/resources/%s', id),
+     callback
+     );
+   };
+
+ShippableAdapter.prototype.deleteResourceVersionById =
+  function (id, callback) {
+    this.delete(
+      util.format('/resourceVersions/%s', id),
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.deleteResourceVersionByResourceId =
+  function (id, callback) {
+    this.delete(
+      util.format('/resourceVersions/%s', id),
+      callback
+    );
+  };
+
+// #######################  PUT  by alphabetical order  ########################
+
+ShippableAdapter.prototype.putIntegrationById =
+  function (id, json, callback) {
+    this.put(
+      util.format('/integrations/%s', id),
+      json,
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.putPipelineById =
+  function (id, json, callback) {
+    this.put(
+      util.format('/pipelines/%s', id),
+      json,
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.putPipelineSourcesById =
+  function (id, json, callback) {
+    this.put(
+      util.format('/pipelineSources/%s', id),
+      json,
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.putProjectById =
+  function (id, json, callback) {
+    this.put(
+      util.format('/projects/%s', id),
       json,
       callback
     );

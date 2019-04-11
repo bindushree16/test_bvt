@@ -454,7 +454,7 @@ describe(test,
        }
     );
 
-    it('24. User can deletes integration by Id',
+    it('25. User can deletes integration by Id',
       function (done) {
         userApiAdapter.deleteIntegrationById(integration.id,
           function (err, ints) {

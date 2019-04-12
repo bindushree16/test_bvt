@@ -122,6 +122,22 @@ ShippableAdapter.prototype.getPipelineSourceById =
     );
   };
 
+ShippableAdapter.prototype.getPipelineStepConnections =
+  function (query, callback) {
+    this.get(
+      util.format('/pipelineStepConnections?%s', query),
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.getPipelineStepConnectionById =
+  function (id, callback) {
+    this.get(
+      util.format('/pipelineStepConnections/%s', id),
+      callback
+    );
+  };
+
 ShippableAdapter.prototype.getProjects =
   function (query, callback) {
     this.get(
@@ -280,6 +296,15 @@ ShippableAdapter.prototype.postPipelineSteps =
     );
   };
 
+ShippableAdapter.prototype.postPipelineStepConnection =
+  function (json, callback) {
+    this.post(
+      '/pipelineStepConnections',
+      json,
+      callback
+    );
+  };
+
 ShippableAdapter.prototype.postProject =
   function (json, callback) {
     this.post(
@@ -367,6 +392,14 @@ ShippableAdapter.prototype.deletePipelineById =
   function (id, callback) {
     this.delete(
       util.format('/pipelines/%s', id),
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.deletePipelineStepConnectionById =
+  function (id, callback) {
+    this.delete(
+      util.format('/pipelineStepConnections/%s', id),
       callback
     );
   };
@@ -473,7 +506,7 @@ ShippableAdapter.prototype.deleteStepletConsolesByPipelineId =
       util.format('/pipelines/%s/Steplets', id),
       callback
     );
-  }; 
+  };
 
 // #######################  PUT  by alphabetical order  ########################
 
@@ -490,6 +523,15 @@ ShippableAdapter.prototype.putPipelineById =
   function (id, json, callback) {
     this.put(
       util.format('/pipelines/%s', id),
+      json,
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.putPipelineStepConnectionById =
+  function (id, json, callback) {
+    this.put(
+      util.format('/pipelineStepConnections/%s', id),
       json,
       callback
     );

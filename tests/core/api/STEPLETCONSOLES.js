@@ -88,7 +88,6 @@ describe(test,
       }
     );
 
-
     it('3. User can post their pipelineSources to add stepletConsoles',
       function (done) {
         var body = {
@@ -370,7 +369,13 @@ describe(test,
       }
     );
 
-   
+  // it('21. StepletconsolesUpdatedAt field in stepletConsoles API shouldnot be null and should be a string type',
+  //   function (done) {
+  //     assert.isNotNull(stepletConsoles.updatedAt, 'StepletConsoles updated at cannot be null');
+  //     assert.equal(typeof(stepletConsoles.updatedAt), 'string');
+  //     return done();
+  //   }
+  // );   
 
     it('22. user can delete stepletConsoles by pipelineId',
       function (done) {

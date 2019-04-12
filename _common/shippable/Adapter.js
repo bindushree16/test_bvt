@@ -459,13 +459,21 @@ ShippableAdapter.prototype.deleteStepletById =
     );
   };
 
-ShippableAdapter.prototype.deleteStepletConsolesByPipelineId =
+ShippableAdapter.prototype.deleteStepletsByPipelineId =
  function (id, callback) {
    this.delete(
      util.format('/pipelines/%s/Steplets', id),
      callback
    );
  };
+
+ShippableAdapter.prototype.deleteStepletConsolesByPipelineId =
+  function (id, callback) {
+    this.delete(
+      util.format('/pipelines/%s/Steplets', id),
+      callback
+    );
+  }; 
 
 // #######################  PUT  by alphabetical order  ########################
 

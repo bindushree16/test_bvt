@@ -90,6 +90,22 @@ ShippableAdapter.prototype.getPipelineById =
     );
   };
 
+ShippableAdapter.prototype.getPipelineSteps =
+  function (query, callback) {
+    this.get(
+      util.format('/pipelineSteps?%s', query),
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.getPipelineStepsById =
+  function (id, callback) {
+    this.get(
+      util.format('/pipelineSteps/%s', id),
+      callback
+    );
+  };
+
 ShippableAdapter.prototype.getPipelineSources =
   function (query, callback) {
     this.get(
@@ -154,6 +170,62 @@ ShippableAdapter.prototype.getResourceVersionById =
     );
   };
 
+ShippableAdapter.prototype.getRuns =
+ function (query, callback) {
+   this.get(
+     util.format('/runs?%s', query),
+     callback
+   );
+ };
+
+ShippableAdapter.prototype.getRunById =
+ function (id, callback) {
+   this.get(
+     util.format('/runs/%s', id),
+     callback
+   );
+ };
+
+ShippableAdapter.prototype.getStepConsolesByStepsId =
+  function (id, callback) {
+    this.get(
+      util.format('/steps/%s/consoles', id),
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.getSteplets =
+  function (query, callback) {
+    this.get(
+      util.format('/steplets?%s', query),
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.getStepletById =
+  function (id, callback) {
+    this.get(
+      util.format('/steplets/%s', id),
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.getSteps =
+  function (query, callback) {
+    this.get(
+      '/steps?' + query,
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.getStepsById =
+  function (id, callback) {
+    this.get(
+      util.format('/steps/%s', id),
+      callback
+    );
+  };
+
 ShippableAdapter.prototype.getSystemCodes =
   function (query, callback) {
     this.get(
@@ -191,6 +263,15 @@ ShippableAdapter.prototype.postPipelineSources =
     );
   };
 
+ShippableAdapter.prototype.postPipelineSteps =
+  function (json, callback) {
+    this.post(
+      '/pipelineSteps',
+      json,
+      callback
+    );
+  };
+
 ShippableAdapter.prototype.postProject =
   function (json, callback) {
     this.post(
@@ -218,6 +299,42 @@ ShippableAdapter.prototype.postResourceVersion =
     );
   };
 
+ShippableAdapter.prototype.postRuns =
+ function (json, callback) {
+   this.post(
+     '/runs',
+     json,
+     callback
+   );
+ };
+
+ShippableAdapter.prototype.postStepConsoles =
+  function (json, callback) {
+    this.post(
+      '/stepConsoles',
+      json,
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.postSteplet =
+function (json, callback) {
+ this.post(
+   '/steplets',
+   json,
+   callback
+ );
+};
+
+ShippableAdapter.prototype.postSteps =
+  function (json, callback) {
+    this.post(
+      '/steps',
+      json,
+      callback
+    );
+  };
+
 // #######################  DELETE  by alphabetical order  ###################
 
 ShippableAdapter.prototype.deleteIntegrationById =
@@ -236,14 +353,6 @@ ShippableAdapter.prototype.deletePipelineById =
     );
   };
 
-ShippableAdapter.prototype.deletePipelineSourcesById =
-  function (id, callback) {
-    this.delete(
-      util.format('/pipelineSources/%s', id),
-      callback
-    );
-  };
-
 ShippableAdapter.prototype.deleteResourceById =
  function (id, callback) {
    this.delete(
@@ -251,6 +360,30 @@ ShippableAdapter.prototype.deleteResourceById =
      callback
      );
    };
+
+ShippableAdapter.prototype.deletePipelineSourcesById =
+ function (id, callback) {
+   this.delete(
+     util.format('/pipelineSources/%s', id),
+     callback
+   );
+ };
+
+ShippableAdapter.prototype.deletePipelineStepsById =
+ function (id, callback) {
+   this.get(
+     util.format('/pipelineSteps/%s', id),
+     callback
+   );
+ };
+
+ShippableAdapter.prototype.deleteResourceById =
+function (id, callback) {
+  this.delete(
+    util.format('/resources/%s', id),
+    callback
+    );
+  };
 
 ShippableAdapter.prototype.deleteResourceVersionById =
   function (id, callback) {
@@ -268,6 +401,54 @@ ShippableAdapter.prototype.deleteResourceVersionByResourceId =
     );
   };
 
+ShippableAdapter.prototype.deleteRunsByPipelineId =
+ function (id, callback) {
+   this.delete(
+     util.format('/pipelines/%s/runs', id),
+     callback
+   );
+ };
+
+ShippableAdapter.prototype.deleteStepConsolesByPipelineId =
+  function (id, callback) {
+    this.delete(
+      util.format('/pipelines/%s/stepConsoles', id),
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.deleteStepById =
+  function (id, callback) {
+    this.delete(
+      util.format('/steps/%s', id),
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.deleteStepsByPipelineId =
+  function (id, callback) {
+    this.delete(
+      util.format('/pipelines/%s/steps', id),
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.deleteStepletById =
+  function (StepLetId, callback) {
+    this.delete(
+      util.format('/steplets/%s', StepLetId),
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.deleteStepletsByPipelineId =
+ function (id, callback) {
+   this.delete(
+     util.format('/pipelines/%s/Steplets', id),
+     callback
+   );
+ };
+
 // #######################  PUT  by alphabetical order  ########################
 
 ShippableAdapter.prototype.putIntegrationById =
@@ -283,6 +464,15 @@ ShippableAdapter.prototype.putPipelineById =
   function (id, json, callback) {
     this.put(
       util.format('/pipelines/%s', id),
+      json,
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.putPipelineStepsById =
+  function (id, json, callback) {
+    this.put(
+      util.format('/pipelineSteps/%s', id),
       json,
       callback
     );
@@ -315,103 +505,19 @@ ShippableAdapter.prototype.putResourceById =
      );
    };
 
-ShippableAdapter.prototype.deleteResourceById =
- function (id, callback) {
-   this.delete(
-     util.format('/resources/%s', id),
-     callback
-     );
-   };
-
-ShippableAdapter.prototype.getRuns =
- function (query, callback) {
-   this.get(
-     util.format('/runs?%s', query),
-     callback
-   );
- };
-
-ShippableAdapter.prototype.getRunById =
- function (id, callback) {
-   this.get(
-     util.format('/runs/%s', id),
-     callback
-   );
- };
-
-ShippableAdapter.prototype.postRuns =
- function (json, callback) {
-   this.post(
-     '/runs',
-     json,
-     callback
-   );
- };
-
-ShippableAdapter.prototype.putRunsById =
- function (id, json, callback) {
-   this.put(
-     util.format('/runs/%s', id),
-     json,
-     callback
-   );
- };
-
-
-ShippableAdapter.prototype.deleteRunsByPipelineId =
- function (id, callback) {
-   this.delete(
-     util.format('/pipelines/%s/runs', id),
-     callback
-   );
- };
-
-ShippableAdapter.prototype.postPipelineSteps =
-  function (json, callback) {
-    this.post(
-      '/pipelineSteps',
-      json,
-      callback
-    );
-  };
-
-ShippableAdapter.prototype.getPipelineSteps =
-  function (query, callback) {
-    this.get(
-      util.format('/pipelineSteps?%s', query),
-      callback
-    );
-  };
-
-ShippableAdapter.prototype.getPipelineStepsById =
-  function (id, callback) {
-    this.get(
-      util.format('/pipelineSteps/%s', id),
-      callback
-    );
-  };
-
-ShippableAdapter.prototype.putPipelineStepsById =
+ ShippableAdapter.prototype.putRunsById =
   function (id, json, callback) {
     this.put(
-      util.format('/pipelineSteps/%s', id),
+      util.format('/runs/%s', id),
       json,
       callback
     );
   };
 
-ShippableAdapter.prototype.deletePipelineStepsById =
-  function (id, callback) {
-    this.get(
-      util.format('/pipelineSteps/%s', id),
-      callback
-    );
-  };
-
-ShippableAdapter.prototype.postSteps =
-  function (json, callback) {
-    this.post(
-      '/steps',
+ShippableAdapter.prototype.putStepletById =
+  function (id, json, callback) {
+    this.put(
+      util.format('/steplets/%s', id),
       json,
       callback
     );
@@ -425,114 +531,6 @@ ShippableAdapter.prototype.putStepById =
       callback
     );
   };
-
-ShippableAdapter.prototype.getSteps =
-  function (query, callback) {
-    this.get(
-      '/steps?' + query,
-      callback
-    );
-  };
-
-ShippableAdapter.prototype.getStepsById =
-  function (id, callback) {
-    this.get(
-      util.format('/steps/%s', id),
-      callback
-    );
-  };
-
-ShippableAdapter.prototype.deleteStepById =
-  function (id, callback) {
-    this.delete(
-      util.format('/steps/%s', id),
-      callback
-    );
-  };
-
-ShippableAdapter.prototype.deleteStepsByPipelineId =
-  function (id, callback) {
-    this.delete(
-      util.format('/pipelines/%s/steps', id),
-      callback
-    );
-  };
-
-ShippableAdapter.prototype.postSteplet =
-function (json, callback) {
-  this.post(
-    '/steplets',
-    json,
-    callback
-  );
-};
-
-ShippableAdapter.prototype.putStepletById =
-  function (id, json, callback) {
-    this.put(
-      util.format('/steplets/%s', id),
-      json,
-      callback
-    );
-  };
-
-ShippableAdapter.prototype.deleteStepletById =
-  function (StepLetId, callback) {
-    this.delete(
-      util.format('/steplets/%s', StepLetId),
-      callback
-    );
-  };
-
-ShippableAdapter.prototype.deleteStepletsByPipelineId =
- function (id, callback) {
-   this.delete(
-     util.format('/pipelines/%s/Steplets', id),
-     callback
-   );
- };
-
-ShippableAdapter.prototype.getSteplets =
-  function (query, callback) {
-    this.get(
-      util.format('/steplets?%s', query),
-      callback
-    );
-  };
-
-ShippableAdapter.prototype.getStepletById =
-  function (id, callback) {
-    this.get(
-      util.format('/steplets/%s', id),
-      callback
-    );
-  };
-
-  ShippableAdapter.prototype.getStepConsolesByStepsId =
-    function (id, callback) {
-      this.get(
-        util.format('/steps/%s/consoles', id),
-        callback
-      );
-    };
-
-ShippableAdapter.prototype.deleteStepConsolesByPipelineId =
-  function (id, callback) {
-    this.delete(
-      util.format('/pipelines/%s/stepConsoles', id),
-      callback
-    );
-  };
-
-ShippableAdapter.prototype.postStepConsoles =
-  function (json, callback) {
-    this.post(
-      '/stepConsoles',
-      json,
-      callback
-    );
-  };
-
 
 ShippableAdapter.prototype.get =
   function (relativeUrl, callback) {

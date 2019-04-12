@@ -50,7 +50,8 @@ function testRun(next) {
      'tests/core/api/STEPS.js',
      'tests/core/api/RESOURCEVERSIONS.js',
      'tests/core/api/STEPLETS.js',
-     'tests/core/api/STEPCONSOLES.js'
+     'tests/core/api/STEPCONSOLES.js',
+     'tests/core/api/STEPLETCONSOLES.js'
   ];
 
   async.eachSeries(tests,

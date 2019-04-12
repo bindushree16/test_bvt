@@ -226,6 +226,14 @@ ShippableAdapter.prototype.getStepsById =
     );
   };
 
+ShippableAdapter.prototype.getStepletConsolesByStepletsId =
+  function (id, callback) {
+    this.get(
+      util.format('/steplets/%s/consoles', id),
+      callback
+    );
+  };
+
 ShippableAdapter.prototype.getSystemCodes =
   function (query, callback) {
     this.get(
@@ -334,6 +342,16 @@ ShippableAdapter.prototype.postSteps =
       callback
     );
   };
+
+ShippableAdapter.prototype.postStepletConsoles =
+  function (json, callback) {
+    this.post(
+      '/stepletConsoles',
+      json,
+      callback
+    );
+  };
+
 
 // #######################  DELETE  by alphabetical order  ###################
 
@@ -448,6 +466,14 @@ ShippableAdapter.prototype.deleteStepletsByPipelineId =
      callback
    );
  };
+
+ShippableAdapter.prototype.deleteStepletConsolesByPipelineId =
+  function (id, callback) {
+    this.delete(
+      util.format('/pipelines/%s/Steplets', id),
+      callback
+    );
+  }; 
 
 // #######################  PUT  by alphabetical order  ########################
 

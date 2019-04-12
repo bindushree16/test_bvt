@@ -11,15 +11,11 @@ describe(test,
   function () {
     var userApiAdapter = null;
     var pipelineStepConnection = [];
-    var steplet = {};
-    var steplet2 = {};
     var project = {};
     var integration = {};
     var pipelineSource = {};
     var pipeline = {};
     var pipelineSteps = {};
-    var step = {};
-    var run = {}
 
     this.timeout(0);
     before(
@@ -117,6 +113,7 @@ describe(test,
         );
       }
     );
+
     it('4. user posts pipeline to add PipelineSteps',
       function (done) {
         var body = {
@@ -140,7 +137,7 @@ describe(test,
       }
     );
 
-    it('5. user post PipelineSteps to add Runs',
+    it('5. user post PipelineSteps to add pipelineStepConnections',
       function (done) {
         var body = {
           "name": global.GH_USR_API_PIPELINESTEPS_NAME,
@@ -170,107 +167,7 @@ describe(test,
       }
     );
 
-    it('6. user post Runs to add steps',
-      function (done) {
-        var body = {
-          "pipelineId": pipeline.id,
-          "projectId": project.id,
-          "statusCode":1000
-        };
-        userApiAdapter.postRuns(body,
-          function (err, rSource) {
-            if (err)
-              return done(
-                new Error(
-                  util.format('User cannot add Run',
-                    util.inspect(err))
-                )
-              );
-            run = rSource;
-            return done();
-          }
-        );
-      }
-    );
-
-    it('7. user post steplets to add pipelineStepConnection',
-      function (done) {
-        var body = {
-          "projectId": project.id,
-          "name" : "vijay",
-          "pipelineId": pipeline.id,
-          "pipelineStepId": pipelineSteps.id,
-          "runId": run.id,
-          "typeCode" : 2007,
-          "statusCode": 4002
-        }
-        userApiAdapter.postSteps(body,
-          function (err, result) {
-            if (err)
-              return done(
-                new Error(
-                  util.format('User cannot add steps',
-                    util.inspect(err))
-                )
-              );
-            step = result;
-            return done();
-          }
-        );
-      }
-    );
-
-    it('8. user post steplets to add pipelineStepConnection',
-      function (done) {
-        var body = {
-          "projectId": project.id,
-          "pipelineId": pipeline.id,
-          "stepId": step.id,
-          "stepletNumber": global.GH_STEPLET_NUMBER,
-          "statusCode": global.GH_STATUS_CODE
-        };
-        userApiAdapter.postSteplet(body,
-          function (err, steplets) {
-            if (err)
-              return done(
-                new Error(
-                  util.format('User cannot add Steplet',
-                    util.inspect(err))
-                 )
-               );
-             steplet = steplets;
-             return done();
-          }
-        );
-      }
-    );
-
-    it('9. user can add new steplets',
-      function (done) {
-        var body = {
-          "projectId": project.id,
-          "pipelineId": pipeline.id,
-          "stepId": step.id,
-          "stepletNumber": 14,
-          "statusCode": global.GH_STATUS_CODE
-        };
-        userApiAdapter.postSteplet(body,
-          function (err, steplets) {
-            if (err)
-              return done(
-                new Error(
-                  util.format('User cannot add Steplet',
-                    util.inspect(err))
-                 )
-               );
-             steplet2 = steplets;
-             return done();
-          }
-        );
-      }
-    );
-
-    it('10. user can add new pipelineStepConnections',
+    it('6. user can add new pipelineStepConnections',
           function (done) {
             var body = {
               "projectId": 1,
@@ -294,7 +191,7 @@ describe(test,
           }
         );
 
-    it('11. user can get their pipelineStepConnections by Id',
+    it('7. user can get their pipelineStepConnections by Id',
       function (done) {
         userApiAdapter.getPipelineStepConnectionById(pipelineStepConnection.id,
           function (err, pipelineStepConnections) {
@@ -312,7 +209,7 @@ describe(test,
       }
     );
 
-    it('12. user can update the pipelineStepConnections by Id',
+    it('8. user can update the pipelineStepConnections by Id',
       function (done) {
         var body = {
            "isTrigger": false
@@ -332,7 +229,7 @@ describe(test,
       }
     );
 
-    it('13. user can get their pipelineStepConnections',
+    it('9. user can get their pipelineStepConnections',
       function (done) {
         userApiAdapter.getPipelineStepConnections('',
           function (err, pipelineStepConnections) {
@@ -350,7 +247,7 @@ describe(test,
       }
     );
 
-    it('14. Id in pipelineStepConnections API shouldnot be null and should be a integer type',
+    it('10. Id in pipelineStepConnections API shouldnot be null and should be a integer type',
      function (done) {
         assert.isNotNull(pipelineStepConnection.id, 'Id cannot be null');
         assert.equal(typeof(pipelineStepConnection.id), 'number');
@@ -358,7 +255,7 @@ describe(test,
       }
     );
 
-    it('15. pipelineStepId in pipelineStepConnections API shouldnot be null and should be a integer type',
+    it('11. pipelineStepId in pipelineStepConnections API shouldnot be null and should be a integer type',
       function (done) {
         assert.isNotNull(pipelineStepConnection.pipelineStepId, 'PipelineStepId cannot be null');
         assert.equal(typeof(pipelineStepConnection.pipelineStepId), 'number');
@@ -366,7 +263,7 @@ describe(test,
       }
     );
 
-    it('16. pipelineId in pipelineStepConnections API shouldnot be null and should be a integer type',
+    it('12. pipelineId in pipelineStepConnections API shouldnot be null and should be a integer type',
       function (done) {
         assert.isNotNull(pipelineStepConnection.pipelineId, 'pipelineId cannot be null');
         assert.equal(typeof(pipelineStepConnection.pipelineId), 'number');
@@ -374,7 +271,7 @@ describe(test,
       }
     );
 
-    it('17. projectId in pipelineStepConnections API shouldnot be null and should be a integer type',
+    it('13. projectId in pipelineStepConnections API shouldnot be null and should be a integer type',
       function (done) {
         assert.isNotNull(pipelineStepConnection.projectId, 'projectId Number cannot be null');
         assert.equal(typeof(pipelineStepConnection.projectId), 'number');
@@ -382,7 +279,7 @@ describe(test,
       }
     );
 
-    it('18. isTrigger in pipelineStepConnections API shouldnot be null and should be a boolean type',
+    it('14. isTrigger in pipelineStepConnections API shouldnot be null and should be a boolean type',
       function (done) {
         assert.isNotNull( pipelineStepConnection.isTrigger, 'isTrigger cannot be null');
         assert.equal(typeof( pipelineStepConnection.isTrigger), 'boolean');
@@ -390,7 +287,7 @@ describe(test,
       }
     );
 
-    it('19. operation in pipelineStepConnections API shouldnot be null and should be a string type',
+    it('15. operation in pipelineStepConnections API shouldnot be null and should be a string type',
      function (done) {
         assert.isNotNull(pipelineStepConnection.operation, 'operation cannot be null');
         assert.equal(typeof(pipelineStepConnection.operation), 'string');
@@ -398,49 +295,49 @@ describe(test,
       }
     );
 
-    // it('20. operationResourceId in pipelineStepConnections API should be a integer type',
+    // it('16. operationResourceId in pipelineStepConnections API should be a integer type',
     //       function (done) {
     //         assert.equal(typeof(pipelineStepConnection.operationResourceId), 'number');
     //         return done();
     //       }
     //     );
     //
-    // it('21. operationResourceName in pipelineStepConnections API should be a string type',
+    // it('17. operationResourceName in pipelineStepConnections API should be a string type',
     //   function (done) {
     //     assert.equal(typeof(pipelineStepConnection.operationResourceName), 'string');
     //     return done();
     //   }
     // );
     //
-    // it('22. operationPipelineStepId in pipelineStepConnections API should be a integer type',
+    // it('18. operationPipelineStepId in pipelineStepConnections API should be a integer type',
     //   function (done) {
     //     assert.equal(typeof(pipelineStepConnection.operationPipelineStepId), 'number');
     //     return done();
     //   }
     // );
     //
-    // it('23. operationPipelineStepName in pipelineStepConnections API should be a string type',
+    // it('19. operationPipelineStepName in pipelineStepConnections API should be a string type',
     //   function (done) {
     //     assert.equal(typeof(pipelineStepConnection.operationPipelineStepName), 'string');
     //     return done();
     //   }
     // );
     //
-    // it('24. operationIntegrationId in pipelineStepConnections API should be a integer type',
+    // it('20. operationIntegrationId in pipelineStepConnections API should be a integer type',
     //   function (done) {
     //     assert.equal(typeof(pipelineStepConnection.operationIntegrationId), 'number');
     //     return done();
     //   }
     // );
     //
-    // it('25. operationIntegrationName in pipelineStepConnections API should be a string type',
+    // it('21. operationIntegrationName in pipelineStepConnections API should be a string type',
     //   function (done) {
     //     assert.equal(typeof(pipelineStepConnection.operationIntegrationName), 'string');
     //     return done();
     //   }
     // );
 
-    it('26. createdAt in pipelineStepConnections API shouldnot be null and should be a string type',
+    it('22. createdAt in pipelineStepConnections API shouldnot be null and should be a string type',
       function (done) {
         assert.isNotNull(pipelineStepConnection.createdAt, 'createdAt cannot be null');
         assert.equal(typeof(pipelineStepConnection.createdAt), 'string');
@@ -448,7 +345,7 @@ describe(test,
       }
     );
 
-    it('27. updatedAt in pipelineStepConnections shouldnot be null and should be a string type',
+    it('23. updatedAt in pipelineStepConnections shouldnot be null and should be a string type',
       function (done) {
         assert.isNotNull(pipelineStepConnection.updatedAt, 'UpdatedAt cannot be null');
         assert.equal(typeof(pipelineStepConnection.updatedAt), 'string');
@@ -456,7 +353,7 @@ describe(test,
       }
     );
 
-    it('28. user can delete by pipelineStepConnections By  Id',
+    it('24. user can delete by pipelineStepConnections By Id',
       function (done) {
          userApiAdapter.deletePipelineStepConnectionById(pipelineStepConnection.id,
            function (err, result) {
@@ -474,7 +371,7 @@ describe(test,
        }
     );
 
-    it('29. user can delete pipelineSource by Id',
+    it('25. user can delete pipelineSource by Id',
       function (done) {
          userApiAdapter.deletePipelineSourcesById(pipelineSource.id,
            function (err, res) {
@@ -491,7 +388,7 @@ describe(test,
        }
     );
 
-    it('30. user can deletes integration by Id',
+    it('26. user can deletes integration by Id',
       function (done) {
         userApiAdapter.deleteIntegrationById(integration.id,
           function (err, ints) {

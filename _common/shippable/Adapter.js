@@ -261,7 +261,7 @@ ShippableAdapter.prototype.getStepletTestReports =
 ShippableAdapter.prototype.getStepletTestReportsByStepletsId =
   function (id, callback) {
     this.get(
-      util.format('/stepletTestReports?%s', id),
+      util.format('/steplets/%s/stepletTestReports', id),
       callback
     );
   };

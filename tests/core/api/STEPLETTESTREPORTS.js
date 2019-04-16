@@ -270,32 +270,16 @@ describe(test,
       }
     );
 
-    // it('10. User can get their stepletTestReports',
-    //   function (done) {
-    //     userApiAdapter.getStepletTestReports('',
-    //       function (err, steprepo) {
-    //         if (err || _.isEmpty(steprepo))
-    //           return done(
-    //             new Error(
-    //               util.format('User cannot get stepletTestReports',
-    //                 query, err)
-    //             )
-    //           );
-    //         return done();
-    //       }
-    //     );
-    //   }
-    // );
-
-    it('11. user can get their stepletTestReports by steplets Id',
+    it('10. User can get their stepletTestReports',
       function (done) {
-        userApiAdapter.getStepletTestReportsByStepletsId(steplets.id,
-          function (err, result) {
-            if (err)
+        var query = 'stepletIds=' + steplets.id;
+        userApiAdapter.getStepletTestReports(query,
+          function (err, steprepo) {
+            if (err || _.isEmpty(steprepo))
               return done(
                 new Error(
                   util.format('User cannot get stepletTestReports',
-                    result, err)
+                    query, err)
                 )
               );
             return done();
@@ -303,6 +287,23 @@ describe(test,
         );
       }
     );
+
+    // it('11. user can get their stepletTestReports by steplets Id',
+    //   function (done) {
+    //     userApiAdapter.getStepletTestReportsByStepletsId(steplets.id,
+    //       function (err, result) {
+    //         if (err)
+    //           return done(
+    //             new Error(
+    //               util.format('User cannot get stepletTestReports',
+    //                 result, err)
+    //             )
+    //           );
+    //         return done();
+    //       }
+    //     );
+    //   }
+    // );
 
     it('12. StepletTestReports Id field in stepletTestReports API shouldnot be null and should be an integer type',
       function (done) {
@@ -349,12 +350,12 @@ describe(test,
       }
     );
 
-    // it('18. StepletTestReports total field in stepletTestReports API should be a integer type',
-    //   function (done) {
-    //     assert.equal(typeof(stepletTestReports.total), 'integer');
-    //     return done();
-    //   }
-    // ); commenting since type is undefined as of now. Will uncomment once it is fixed
+    it('18. StepletTestReports totalTests field in stepletTestReports API should be a integer type',
+      function (done) {
+        assert.equal(typeof(stepletTestReports.totalTests), 'number');
+        return done();
+      }
+    ); 
 
     it('19. StepletTestReports totalErrors field in stepletTestReports API should be a integer type',
       function (done) {
@@ -463,7 +464,6 @@ describe(test,
                     steplets.id, err)
                 )
               );
-
             return done();
           }
         );

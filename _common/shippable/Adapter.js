@@ -250,6 +250,22 @@ ShippableAdapter.prototype.getStepletConsolesByStepletsId =
     );
   };
 
+ShippableAdapter.prototype.getStepletTestReports =
+  function (query, callback) {
+    this.get(
+      util.format('/stepletTestReports?%s', query),
+      callback
+    );
+  };  
+
+ShippableAdapter.prototype.getStepletTestReportsByStepletsId =
+  function (id, callback) {
+    this.get(
+      util.format('/stepletTestReports?%s', id),
+      callback
+    );
+  };
+
 ShippableAdapter.prototype.getSystemCodes =
   function (query, callback) {
     this.get(
@@ -376,6 +392,16 @@ ShippableAdapter.prototype.postStepletConsoles =
       callback
     );
   };
+
+ShippableAdapter.prototype.postStepletTestReports =
+  function (json, callback) {
+    this.post(
+      '/stepletTestReports',
+      json,
+      callback
+    );
+  };
+
 
 
 // #######################  DELETE  by alphabetical order  ###################
@@ -507,6 +533,31 @@ ShippableAdapter.prototype.deleteStepletConsolesByPipelineId =
       callback
     );
   };
+
+ShippableAdapter.prototype.deleteStepletTestReportsById =
+  function (id, callback) {
+    this.delete(
+      util.format('/stepletTestReports/%s', id),
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.deleteStepletTestReportsByStepletId =
+ function (id, callback) {
+   this.delete(
+     util.format('/Steplets/%s/stepletTestReports', id),
+     callback
+   );
+ };  
+
+ShippableAdapter.prototype.deleteStepletTestReportsByPipelineId =
+  function (id, callback) {
+    this.delete(
+      util.format('/pipelines/%s/stepletTestReports', id),
+      callback
+    );
+  };
+
 
 // #######################  PUT  by alphabetical order  ########################
 

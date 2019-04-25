@@ -161,7 +161,7 @@ describe(test,
           "staticPropertyBag": {
             "imageName": "shippabledocker/sample_python"
           },
-          "name": "docker-pytimage",
+          "name": "dockerPythonImage",
           "integrationId": dockerIntegration.id,
           "typeCode": 1001,
           "projectId": project.id,

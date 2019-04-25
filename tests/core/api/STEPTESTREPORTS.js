@@ -394,7 +394,7 @@ describe(test,
        }
     );
 
-    it('25. user can delete stepTestReports by stepletId',
+    it('25. user can delete stepTestReports by stepId',
       function (done) {
         userApiAdapter.deleteStepTestReportsByStepId(step.id,
           function (err, step) {

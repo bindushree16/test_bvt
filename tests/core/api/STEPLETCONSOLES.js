@@ -8,7 +8,7 @@ describe(test,
   function () {
     var userApiAdapter = null;
     var step = {};
-    var steplets = {};
+    var steplet = {};
     var project = {};
     var integration = {};
     var pipelineSources = {};
@@ -227,7 +227,7 @@ describe(test,
           "statusCode": global.GH_STATUS_CODE
         };
         userApiAdapter.postSteplet(body,
-          function (err, stepls) {
+          function (err, stplet) {
             if (err)
               return done(
                 new Error(
@@ -235,7 +235,7 @@ describe(test,
                     util.inspect(err))
                  )
                );
-             steplets = stepls;
+             steplet = stplet;
              return done();
           }
         );
@@ -245,7 +245,7 @@ describe(test,
     it('9. user can add new stepletConsoles',
       function (done) {
         var body = {
-          "stepId": step.id,
+          "stepletId": steplet.id,
           "stepletConsoles": [{
             "consoleId": "varun",
             "parentConsoleId": "root",
@@ -275,7 +275,7 @@ describe(test,
 
     it('10. user can get their stepletConsoles',
       function (done) {
-        userApiAdapter.getStepletConsolesByStepletsId(steplets.id,
+        userApiAdapter.getStepletConsolesByStepletsId(steplet.id,
           function (err, result) {
             if (err)
               return done(
@@ -375,7 +375,7 @@ describe(test,
   //     assert.equal(typeof(stepletConsoles.updatedAt), 'string');
   //     return done();
   //   }
-  // );   
+  // );
 
     it('22. user can delete stepletConsoles by pipelineId',
       function (done) {
@@ -402,7 +402,7 @@ describe(test,
               return done(
                 new Error(
                   util.format('User cannot delete step by Id',
-                    steplets.id, err)
+                    steplet.id, err)
                 )
               );
             return done();

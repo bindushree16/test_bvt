@@ -266,18 +266,18 @@ ShippableAdapter.prototype.getStepletCoverageReportsByStepletId =
    );
  };
 
-ShippableAdapter.prototype.getStepletTestReports =
+ShippableAdapter.prototype.getStepTestReports =
   function (query, callback) {
     this.get(
-      util.format('/stepletTestReports?%s', query),
+      util.format('/stepTestReports?%s', query),
       callback
     );
-  };  
+  };
 
-ShippableAdapter.prototype.getStepletTestReportsByStepletsId =
+ShippableAdapter.prototype.getStepTestReportsByStepletsId =
   function (id, callback) {
     this.get(
-      util.format('/steplets/%s/stepletTestReports', id),
+      util.format('/steps/%s/stepTestReports', id),
       callback
     );
   };
@@ -418,10 +418,11 @@ ShippableAdapter.prototype.postStepletCoverageReport =
  );
 };
 
-ShippableAdapter.prototype.postStepletTestReports =
+
+ShippableAdapter.prototype.postStepTestReports =
   function (json, callback) {
     this.post(
-      '/stepletTestReports',
+      '/stepTestReports',
       json,
       callback
     );
@@ -581,26 +582,26 @@ ShippableAdapter.prototype.deleteStepletCoverageReportByPipelineId =
     );
   };
 
-ShippableAdapter.prototype.deleteStepletTestReportsById =
+ShippableAdapter.prototype.deleteStepTestReportsById =
   function (id, callback) {
     this.delete(
-      util.format('/stepletTestReports/%s', id),
+      util.format('/stepTestReports/%s', id),
       callback
     );
   };
 
-ShippableAdapter.prototype.deleteStepletTestReportsByStepletId =
+ShippableAdapter.prototype.deleteStepTestReportsByStepId =
  function (id, callback) {
    this.delete(
-     util.format('/Steplets/%s/stepletTestReports', id),
+     util.format('/Steps/%s/stepTestReports', id),
      callback
    );
- };  
+ };
 
-ShippableAdapter.prototype.deleteStepletTestReportsByPipelineId =
+ShippableAdapter.prototype.deleteStepTestReportsByPipelineId =
   function (id, callback) {
     this.delete(
-      util.format('/pipelines/%s/stepletTestReports', id),
+      util.format('/pipelines/%s/stepTestReports', id),
       callback
     );
   };

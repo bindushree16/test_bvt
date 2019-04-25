@@ -2,8 +2,8 @@
 
 var testSetup = require('../../../testSetup.js');
 
-var testSuite = 'API_STEPLETTESTREPORTS';
-var testSuiteDesc = 'Github Organization StepletTestReports API tests';
+var testSuite = 'API_STEPTESTREPORTS';
+var testSuiteDesc = 'Github Organization StepTestReports API tests';
 var test = util.format('%s - %s', testSuite, testSuiteDesc);
 
 describe(test,
@@ -17,7 +17,7 @@ describe(test,
     var pipelineSteps = {};
     var step = {};
     var run = {};
-    var stepletTestReports = {};
+    var stepTestReports = {};
 
     this.timeout(0);
     before(
@@ -56,7 +56,7 @@ describe(test,
       }
     );
 
-    it('2. User posts github integration to add stepletTestReports',
+    it('2. User posts github integration to add stepTestReports',
       function (done) {
         var body = {
           "masterIntegrationId": 20,
@@ -90,7 +90,7 @@ describe(test,
      }
     );
 
-    it('3. User posts PipelineSources to add stepletTestReports',
+    it('3. User posts PipelineSources to add stepTestReports',
      function (done) {
        var body = {
          "projectId": project.id,
@@ -115,7 +115,7 @@ describe(test,
       }
     );
 
-    it('4. User posts pipeline to add stepletTestReports',
+    it('4. User posts pipeline to add stepTestReports',
       function (done) {
         var body = {
           "name": global.GH_USR_API_PIPELINE_NAME,
@@ -138,7 +138,7 @@ describe(test,
       }
     );
 
-    it('5. User post PipelineSteps to add stepletTestReports',
+    it('5. User post PipelineSteps to add stepTestReports',
       function (done) {
         var body = {
           "name": global.GH_USR_API_PIPELINESTEPS_NAME,
@@ -168,7 +168,7 @@ describe(test,
       }
     );
 
-    it('6. User post Runs to add stepletTestReports',
+    it('6. User post Runs to add stepTestReports',
       function (done) {
         var body = {
           "pipelineId": pipeline.id,
@@ -191,11 +191,11 @@ describe(test,
       }
     );
 
-    it('7. User post steps to add stepletTestReports',
+    it('7. User post steps to add stepTestReports',
       function (done) {
         var body = {
           "projectId": project.id,
-          "name" : "vijay_priya",
+          "name" : "vijay",
           "pipelineId": pipeline.id,
           "pipelineStepId": pipelineSteps.id,
           "runId": run.id,
@@ -218,67 +218,42 @@ describe(test,
       }
     );
 
-    it('8. User post steplets to add stepletTestReports',
+    it('8. User can add new stepTestReports',
       function (done) {
         var body = {
           "projectId": project.id,
-          "pipelineId": pipeline.id,
           "stepId": step.id,
-          "stepletNumber": global.GH_STEPLET_NUMBER,
-          "statusCode": global.GH_STATUS_CODE
-        };
-        userApiAdapter.postSteplet(body,
-          function (err, steplet) {
-            if (err)
-              return done(
-                new Error(
-                  util.format('User cannot add Steplet',
-                    util.inspect(err))
-                 )
-               );
-             steplets = steplet;
-             return done();
-          }
-        );
-      }
-    );
-
-    it('9. User can add new stepletTestReports',
-      function (done) {
-        var body = {
-          "projectId": project.id,
-          "stepletId": steplets.id,
           "totalTests": 10,
           "totalErrors": 2,
           "totalFailures": 2,
           "totalPassing": 4,
           "totalSkipped": 2
         };
-        userApiAdapter.postStepletTestReports(body,
+        userApiAdapter.postStepTestReports(body,
           function (err, stestreport) {
             if (err)
               return done(
                 new Error(
-                  util.format('User cannot add stepletTestReports',
+                  util.format('User cannot add stepTestReports',
                     util.inspect(err))
                  )
                );
-             stepletTestReports = stestreport;
+             stepTestReports = stestreport;
              return done();
           }
         );
       }
     );
 
-    it('10. User can get their stepletTestReports',
+    it('9. User can get their stepTestReports',
       function (done) {
-        var query = 'stepletIds=' + steplets.id;
-        userApiAdapter.getStepletTestReports(query,
+        var query = 'stepIds=' + step.id;
+        userApiAdapter.getStepTestReports(query,
           function (err, steprepo) {
             if (err || _.isEmpty(steprepo))
               return done(
                 new Error(
-                  util.format('User cannot get stepletTestReports',
+                  util.format('User cannot get stepTestReports',
                     query, err)
                 )
               );
@@ -288,14 +263,14 @@ describe(test,
       }
     );
 
-    // it('11. user can get their stepletTestReports by steplets Id',
+    // it('10. user can get their stepTestReports by steplets Id',
     //   function (done) {
-    //     userApiAdapter.getStepletTestReportsByStepletsId(steplets.id,
+    //     userApiAdapter.getStepTestReportsByStepletsId(steplets.id,
     //       function (err, result) {
     //         if (err)
     //           return done(
     //             new Error(
-    //               util.format('User cannot get stepletTestReports',
+    //               util.format('User cannot get stepTestReports',
     //                 result, err)
     //             )
     //           );
@@ -305,111 +280,111 @@ describe(test,
     //   }
     // );
 
-    it('12. StepletTestReports Id field in stepletTestReports API shouldnot be null and should be an integer type',
+    it('11. StepTestReports Id field in stepTestReports API shouldnot be null and should be an integer type',
       function (done) {
-        assert.isNotNull(stepletTestReports.id, 'StepletTestReports Id cannot be null');
-        assert.equal(typeof(stepletTestReports.id), 'number');
+        assert.isNotNull(stepTestReports.id, 'StepTestReports Id cannot be null');
+        assert.equal(typeof(stepTestReports.id), 'number');
         return done();
       }
     );
 
-    it('13. StepletTestReports durationSeconds field in stepletTestReports API should be a integer type',
+    it('12. StepTestReports durationSeconds field in stepTestReports API should be a integer type',
       function (done) {
-        assert.equal(typeof(stepletTestReports.durationSeconds), 'object');
+        assert.equal(typeof(stepTestReports.durationSeconds), 'object');
         return done();
       }
     );
 
-    it('14. StepletTestReports errorDetails in stepletTestReports API should be a string type',
+    it('13. StepTestReports errorDetails in stepTestReports API should be a string type',
       function (done) {
-        assert.equal(typeof(stepletTestReports.errorDetails), 'object');
-        return done();
-      }
-    ); 
-
-    it('15. StepletTestReports failureDetails in stepletTestReports API should be a string type',
-      function (done) {
-        assert.equal(typeof(stepletTestReports.failureDetails), 'object');
+        assert.equal(typeof(stepTestReports.errorDetails), 'object');
         return done();
       }
     );
 
-    it('16. StepletTestReports projectId field in stepletTestReports API shouldnot be null and should be an integer type',
+    it('14. StepTestReports failureDetails in stepTestReports API should be a string type',
       function (done) {
-        assert.isNotNull(stepletTestReports.projectId, 'StepletTestReports projectId cannot be null');
-        assert.equal(typeof(stepletTestReports.projectId), 'number');
-        return done();
-      }
-    );
- 
-    it('17. StepletTestReports stepletId field in stepletTestReports API shouldnot be null and should be an integer type',
-      function (done) {
-        assert.isNotNull(stepletTestReports.stepletId, 'StepletTestReports stepletId cannot be null');
-        assert.equal(typeof(stepletTestReports.stepletId), 'number');
+        assert.equal(typeof(stepTestReports.failureDetails), 'object');
         return done();
       }
     );
 
-    it('18. StepletTestReports totalTests field in stepletTestReports API should be a integer type',
+    it('15. StepTestReports projectId field in stepTestReports API shouldnot be null and should be an integer type',
       function (done) {
-        assert.equal(typeof(stepletTestReports.totalTests), 'number');
-        return done();
-      }
-    ); 
-
-    it('19. StepletTestReports totalErrors field in stepletTestReports API should be a integer type',
-      function (done) {
-        assert.equal(typeof(stepletTestReports.totalErrors), 'number');
-        return done();
-      }
-    ); 
-
-    it('20. StepletTestReports totalFailures field in stepletTestReports API should be a integer type',
-      function (done) {
-        assert.equal(typeof(stepletTestReports.totalFailures), 'number');
+        assert.isNotNull(stepTestReports.projectId, 'StepTestReports projectId cannot be null');
+        assert.equal(typeof(stepTestReports.projectId), 'number');
         return done();
       }
     );
 
-    it('21. StepletTestReports totalPassing field in stepletTestReports API should be a integer type',
+    it('16. StepTestReports stepId field in stepTestReports API shouldnot be null and should be an integer type',
       function (done) {
-        assert.equal(typeof(stepletTestReports.totalPassing), 'number');
-        return done();
-      }
-    );   
-    
-    it('22. StepletTestReports totalSkipped field in stepletTestReports API should be a integer type',
-      function (done) {
-        assert.equal(typeof(stepletTestReports.totalSkipped), 'number');
-        return done();
-      }
-    ); 
-
-    it('23. StepletTestReports CreatedAt field in stepletTestReports API shouldnot be null and should be a string type',
-      function (done) {
-        assert.isNotNull(stepletTestReports.createdAt, 'StepletTestReports created at cannot be null');
-        assert.equal(typeof(stepletTestReports.createdAt), 'string');
+        assert.isNotNull(stepTestReports.stepId, 'StepTestReports stepId cannot be null');
+        assert.equal(typeof(stepTestReports.stepId), 'number');
         return done();
       }
     );
 
-    it('24. StepletTestReports UpdatedAt field in stepletTestReports API shouldnot be null and should be a string type',
+    it('17. StepTestReports totalTests field in stepTestReports API should be a integer type',
       function (done) {
-        assert.isNotNull(stepletTestReports.updatedAt, 'StepletTestReports updated at cannot be null');
-        assert.equal(typeof(stepletTestReports.updatedAt), 'string');
+        assert.equal(typeof(stepTestReports.totalTests), 'number');
         return done();
       }
     );
 
-    it('25. User can delete stepletTestReports by Id',
+    it('18. StepTestReports totalErrors field in stepTestReports API should be a integer type',
       function (done) {
-         userApiAdapter.deleteStepletTestReportsById(stepletTestReports.id,
+        assert.equal(typeof(stepTestReports.totalErrors), 'number');
+        return done();
+      }
+    );
+
+    it('19. StepTestReports totalFailures field in stepTestReports API should be a integer type',
+      function (done) {
+        assert.equal(typeof(stepTestReports.totalFailures), 'number');
+        return done();
+      }
+    );
+
+    it('20. StepTestReports totalPassing field in stepTestReports API should be a integer type',
+      function (done) {
+        assert.equal(typeof(stepTestReports.totalPassing), 'number');
+        return done();
+      }
+    );
+
+    it('21. StepTestReports totalSkipped field in stepTestReports API should be a integer type',
+      function (done) {
+        assert.equal(typeof(stepTestReports.totalSkipped), 'number');
+        return done();
+      }
+    );
+
+    it('22. StepTestReports CreatedAt field in stepTestReports API shouldnot be null and should be a string type',
+      function (done) {
+        assert.isNotNull(stepTestReports.createdAt, 'StepTestReports created at cannot be null');
+        assert.equal(typeof(stepTestReports.createdAt), 'string');
+        return done();
+      }
+    );
+
+    it('23. StepTestReports UpdatedAt field in stepTestReports API shouldnot be null and should be a string type',
+      function (done) {
+        assert.isNotNull(stepTestReports.updatedAt, 'StepTestReports updated at cannot be null');
+        assert.equal(typeof(stepTestReports.updatedAt), 'string');
+        return done();
+      }
+    );
+
+    it('24. User can delete stepTestReports by Id',
+      function (done) {
+         userApiAdapter.deleteStepTestReportsById(stepTestReports.id,
            function (err, stestreport) {
              if (err || _.isEmpty(stestreport))
                return done(
                  new Error(
-                   util.format('User cannot delete stepletTestReports by Id',
-                     stepletTestReports.id, err)
+                   util.format('User cannot delete stepTestReports by Id',
+                     stepTestReports.id, err)
                  )
                 );
 
@@ -419,15 +394,15 @@ describe(test,
        }
     );
 
-    it('26. user can delete stepletTestReports by stepletId',
+    it('25. user can delete stepTestReports by stepId',
       function (done) {
-        userApiAdapter.deleteStepletTestReportsByStepletId(steplets.id,
-          function (err, steplet) {
+        userApiAdapter.deleteStepTestReportsByStepId(step.id,
+          function (err, step) {
             if (err)
               return done(
                 new Error(
-                  util.format('User cannot delete stepletTestReports by stepletId',
-                    stepletTestReports.id, err)
+                  util.format('User cannot delete stepTestReports by stepId',
+                    stepTestReports.id, err)
                 )
               );
             return done();
@@ -436,15 +411,15 @@ describe(test,
       }
     );
 
-    it('27. user can delete stepletTestReports by pipelineId',
+    it('26. user can delete stepTestReports by pipelineId',
       function (done) {
-        userApiAdapter.deleteStepletTestReportsByPipelineId(pipeline.id,
+        userApiAdapter.deleteStepTestReportsByPipelineId(pipeline.id,
           function (err, pipe) {
             if (err)
               return done(
                 new Error(
-                  util.format('User cannot delete stepletTestReports by pipelineId',
-                    stepletTestReports.id, err)
+                  util.format('User cannot delete stepTestReports by pipelineId',
+                    stepTestReports.id, err)
                 )
               );
             return done();
@@ -453,24 +428,7 @@ describe(test,
       }
     );
 
-    it('28. User can delete steplets by Id for stepletTestReports',
-      function (done) {
-        userApiAdapter.deleteStepletById(steplets.id,
-        function (err, result) {
-          if (err || _.isEmpty(result))
-              return done(
-                new Error(
-                  util.format('User cannot delete steplets by Id',
-                    steplets.id, err)
-                )
-              );
-            return done();
-          }
-        );
-      }
-    );
-
-    it('29. User can delete pipelineSteps by Id for stepletTestReports',
+    it('27. User can delete pipelineSteps by Id for stepTestReports',
       function (done) {
         userApiAdapter.deletePipelineStepsById(pipelineSteps.id,
           function (err, psteps) {
@@ -487,7 +445,7 @@ describe(test,
       }
     );
 
-    it('30. User can delete pipelines by Id for stepletTestReports',
+    it('28. User can delete pipelines by Id for stepTestReports',
       function (done) {
         userApiAdapter.deletePipelineById(pipeline.id,
           function (err, res) {
@@ -504,7 +462,7 @@ describe(test,
       }
     );
 
-    it('31. User can delete pipelineSource by Id for stepletTestReports',
+    it('29. User can delete pipelineSource by Id for stepTestReports',
       function (done) {
         userApiAdapter.deletePipelineSourcesById(pipelineSource.id,
           function (err, res) {
@@ -522,7 +480,7 @@ describe(test,
       }
     );
 
-    it('32. User can delete integration by Id for stepletTestReports',
+    it('30. User can delete integration by Id for stepTestReports',
       function (done) {
         userApiAdapter.deleteIntegrationById(integration.id,
           function (err, ints) {
@@ -546,5 +504,3 @@ describe(test,
     );
   }
 );
-
-

@@ -250,6 +250,22 @@ ShippableAdapter.prototype.getStepletConsolesByStepletsId =
     );
   };
 
+ShippableAdapter.prototype.getStepletCoverageReports =
+ function (query, callback) {
+   this.get(
+     util.format('/stepletCoverageReports?%s', query),
+     callback
+   );
+ };
+
+ShippableAdapter.prototype.getStepletCoverageReportsByStepletId =
+ function (id, callback) {
+   this.get(
+     util.format('/steplets/%s/stepletCoverageReports', id),
+     callback
+   );
+ };
+
 ShippableAdapter.prototype.getStepletTestReports =
   function (query, callback) {
     this.get(
@@ -393,6 +409,15 @@ ShippableAdapter.prototype.postStepletConsoles =
     );
   };
 
+ShippableAdapter.prototype.postStepletCoverageReport =
+  function (json, callback) {
+    this.post(
+      '/stepletCoverageReports',
+   json,
+   callback
+ );
+};
+
 ShippableAdapter.prototype.postStepletTestReports =
   function (json, callback) {
     this.post(
@@ -401,8 +426,6 @@ ShippableAdapter.prototype.postStepletTestReports =
       callback
     );
   };
-
-
 
 // #######################  DELETE  by alphabetical order  ###################
 
@@ -448,7 +471,7 @@ ShippableAdapter.prototype.deletePipelineSourcesById =
 
 ShippableAdapter.prototype.deletePipelineStepsById =
  function (id, callback) {
-   this.get(
+   this.delete(
      util.format('/pipelineSteps/%s', id),
      callback
    );
@@ -530,6 +553,30 @@ ShippableAdapter.prototype.deleteStepletConsolesByPipelineId =
   function (id, callback) {
     this.delete(
       util.format('/pipelines/%s/Steplets', id),
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.deleteStepletCoverageReportById =
+  function (id, callback) {
+    this.delete(
+      util.format('/stepletCoverageReports/%s', id),
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.deleteStepletCoverageReportByStepletId =
+  function (id, callback) {
+    this.delete(
+      util.format('/stepletCoverageReports/%s', id),
+      callback
+    );
+  };
+
+ShippableAdapter.prototype.deleteStepletCoverageReportByPipelineId =
+  function (id, callback) {
+    this.delete(
+      util.format('/stepletCoverageReports/%s', id),
       callback
     );
   };

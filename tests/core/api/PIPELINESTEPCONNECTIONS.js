@@ -170,9 +170,9 @@ describe(test,
     it('6. user can add new pipelineStepConnections',
           function (done) {
             var body = {
-              "projectId": 1,
-              "pipelineId": 1,
-              "pipelineStepId": 1,
+              "projectId": project.id,
+              "pipelineId": pipeline.id,
+              "pipelineStepId": pipelineSteps.id,
               "operation": "IN"
             };
             userApiAdapter.postPipelineStepConnection(body,

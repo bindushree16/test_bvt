@@ -58,18 +58,18 @@ ShippableAdapter.prototype.postAuth = function (sysIntId, json, callback) {
   this.post(url, json, callback);
 };
 
-ShippableAdapter.prototype.getIntegrations =
+ShippableAdapter.prototype.getProjectIntegrations =
   function (query, callback) {
     this.get(
-      util.format('/integrations?%s', query),
+      util.format('/projectIntegrations?%s', query),
       callback
     );
   };
 
-ShippableAdapter.prototype.getIntegrationById =
+ShippableAdapter.prototype.getProjectIntegrationById =
   function (id, callback) {
     this.get(
-      util.format('/integrations/%s', id),
+      util.format('/projectIntegrations/%s', id),
       callback
     );
   };
@@ -292,10 +292,10 @@ ShippableAdapter.prototype.getSystemCodes =
 
 // #######################  POST  by alphabetical order  ######################
 
-ShippableAdapter.prototype.postIntegration =
+ShippableAdapter.prototype.postProjectIntegration =
   function (json, callback) {
     this.post(
-      '/integrations',
+      '/projectIntegrations',
        json,
        callback
     );
@@ -430,10 +430,10 @@ ShippableAdapter.prototype.postStepTestReports =
 
 // #######################  DELETE  by alphabetical order  ###################
 
-ShippableAdapter.prototype.deleteIntegrationById =
+ShippableAdapter.prototype.deleteProjectIntegrationById =
   function (id, callback) {
     this.delete(
-      util.format('/integrations/%s', id),
+      util.format('/projectIntegrations/%s', id),
       callback
     );
   };
@@ -609,10 +609,10 @@ ShippableAdapter.prototype.deleteStepTestReportsByPipelineId =
 
 // #######################  PUT  by alphabetical order  ########################
 
-ShippableAdapter.prototype.putIntegrationById =
+ShippableAdapter.prototype.putProjectIntegrationById =
   function (id, json, callback) {
     this.put(
-      util.format('/integrations/%s', id),
+      util.format('/projectIntegrations/%s', id),
       json,
       callback
     );

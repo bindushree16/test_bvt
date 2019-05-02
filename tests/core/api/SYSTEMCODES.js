@@ -2,15 +2,14 @@
 
 var testSetup = require('../../../testSetup.js');
 
-var testSuite = 'API_SYSTEMCODES';
-var testSuiteDesc = 'Github Organization Systemcodes API tests';
+var testSuite = 'API_systemCodes';
+var testSuiteDesc = 'Github Organization systemCodes API tests';
 var test = util.format('%s - %s', testSuite, testSuiteDesc);
 
 describe(test,
   function () {
-    var userApiAdapter = null;
+    var publicUserApiAdapter = null;
     var systemCodes = [];
-
 
     this.timeout(0);
     before(
@@ -25,8 +24,8 @@ describe(test,
               return done(err);
             }
 
-            userApiAdapter =
-              global.newApiAdapterByToken(global.SHIPPABLE_API_TOKEN);
+            publicUserApiAdapter =
+              global.newApiAdapterByToken();
 
             return done();
 
@@ -35,21 +34,21 @@ describe(test,
       }
     );
 
-    it('1. User can get their systemcodes',
+    it('1. Public user can get their systemcodes',
       function (done) {
-        userApiAdapter.getSystemCodes('',
+        publicUserApiAdapter.getSystemCodes('',
           function (err, codes) {
             if (err)
               return done(
                 new Error(
-                  util.format('User cannot get systemcodes',
+                  util.format('public user cannot get systemcodes',
                     query, err)
                 )
               );
             systemCodes = _.first(codes);
 
 
-            assert.isNotEmpty(codes, 'User cannot find the codes');
+            assert.isNotEmpty(codes, 'public user cannot find the codes');
             return done();
           }
         );
@@ -58,7 +57,7 @@ describe(test,
 
     it('2. Code field in systemcodes API shouldnot be null and should be a number',
       function (done) {
-        assert.isNotNull(systemCodes.code, 'sysremCodes code field cannot be null');
+        assert.isNotNull(systemCodes.code, 'systemCodes code field cannot be null');
         assert.equal(typeof(systemCodes.code), 'number');
         return done();
       }

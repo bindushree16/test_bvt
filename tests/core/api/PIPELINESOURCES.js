@@ -8,11 +8,19 @@ var test = util.format('%s - %s', testSuite, testSuiteDesc);
 
 describe(test,
   function () {
-    var userApiAdapter = global.newApiAdapterByToken(
-      global.SHIPPABLE_API_TOKEN);
-    var pipelineSource = [];
+    var superUserApiAdapter = global.newApiAdapterByToken(
+      global.SHIPPABLE_SUPERUSER_TOKEN);
+    var adminApiAdapter =global.newApiAdapterByToken(
+      global.SHIPPABLE_ADMIN_TOKEN)
+    var memberApiAdapter = global.newApiAdapterByToken(
+      global.SHIPPABLE_MEMBER_TOKEN);
+
+    var superUserPipelineSource = {};
+    var adminUserPipelineSource = {};
+    var memberPipelineSource = {};
     var project = {};
     var integration = {};
+
 
     this.timeout(0);
     before(
@@ -33,9 +41,9 @@ describe(test,
       }
     );
 
-    it('1. User can get their projects',
+    it('1. Super user should be able to get their projects',
       function getProject(done) {
-        userApiAdapter.getProjects('',
+        superUserApiAdapter.getProjects('',
           function(err, prjs) {
             if (err || _.isEmpty(prjs))
               return done(
@@ -50,12 +58,12 @@ describe(test,
       }
     );
 
-    it('2. User can post their integration',
+    it('2. Super user should be able to post their integration',
       function postGitIntegration(done) {
         var body = {
          "masterIntegrationId": 20,
          "masterIntegrationName": "github",
-         "name": 'git42',
+         "name": global.GH_USR_API_ADMIN_PROJECT_NAME,
          "projectId": project.id,
          "formJSONValues": [
              {
@@ -68,12 +76,12 @@ describe(test,
              }
            ]
          };
-        userApiAdapter.postIntegration(body,
+        superUserApiAdapter.postIntegration(body,
           function (err, int) {
             if (err)
               return done(
                 new Error(
-                  util.format('User cannot add integration',
+                  util.format('Super user cannot add integration',
                     util.inspect(err))
                 )
               );
@@ -84,7 +92,7 @@ describe(test,
       }
     );
 
-    it('3. User add new PipelineSources',
+    it('3. Super user should be able add new PipelineSources',
       function (done) {
         var body = {
           "projectId": project.id,
@@ -93,17 +101,45 @@ describe(test,
           "branch": global.GH_PROJECT_BRANCH,
           "integrationId": integration.id
         };
-        userApiAdapter.postPipelineSources(body,
+        superUserApiAdapter.postPipelineSources(body,
           function (err, pSource) {
             if (err)
               return done(
                 new Error(
-                  util.format('User cannot add PipelineSource',
+                  util.format('Super user cannot add PipelineSource',
                     util.inspect(err))
                 )
               );
+              superUserPipelineSource = pSource;
+              setTimeout(
+                function () {
+                  return done();
+                }, 60 * 1000
+              );
+            }
+          );
+        }
+      );
 
-            pipelineSource = pSource;
+    it('4. Admin should be able add new PipelineSources',
+      function (done) {
+        var body = {
+          "projectId": project.id,
+          "repositoryFullName":  global.GH_USERNAME + '/' +
+            global.GH_ADMIN_PROJECT_NAME,
+          "branch": global.GH_PROJECT_BRANCH,
+          "integrationId": integration.id
+        };
+        adminApiAdapter.postPipelineSources(body,
+          function (err, pSource) {
+            if (err)
+              return done(
+                new Error(
+                  util.format('Admin cannot add PipelineSource',
+                    util.inspect(err))
+                )
+              );
+            adminUserPipelineSource = pSource;
             setTimeout(
               function () {
                 return done();
@@ -114,37 +150,17 @@ describe(test,
       }
     );
 
-
-    it('4. User can get their pipelinesources by Id',
-      function (done) {
-        userApiAdapter.getPipelineSourceById(pipelineSource.id,
-          function (err, piplinsid) {
-            if (err)
-              return done(
-                new Error(
-                  util.format('User cannot get pipelineSource by Id', err)
-                )
-              );
-            pipelineSource = piplinsid;
-
-            assert.isNotEmpty(piplinsid, 'User cannot find the pipelineSourcesId');
-            return done();
-          }
-        );
-      }
-    );
-
-    it('5. User can update the pipelineSource by Id',
+    it('5. Super user should be able to update their pipelineSource by Id',
       function (done) {
         var body = {
             "isSyncing": true
         };
-        userApiAdapter.putPipelineSourcesById(pipelineSource.id, body,
+        superUserApiAdapter.putPipelineSourcesById(superUserPipelineSource.id, body,
           function (err, piplin) {
             if (err)
               return done(
                 new Error(
-                  util.format('User cannot update pipelinesource',
+                  util.format('Super user cannot update pipelinesource',
                     util.inspect(err))
                   )
                 );
@@ -154,169 +170,292 @@ describe(test,
       }
     );
 
-
-    it('6.  User field can get their pipelinesources',
+    it('6. Admin should be able to update their pipelineSource by Id',
       function (done) {
-         userApiAdapter.getPipelineSources('',
+        var body = {
+            "isSyncing": true
+        };
+        adminApiAdapter.putPipelineSourcesById(adminUserPipelineSource.id, body,
+          function (err, piplin) {
+            if (err)
+              return done(
+                new Error(
+                  util.format('Admin cannot update pipelinesource',
+                    util.inspect(err))
+                  )
+                );
+            return done();
+          }
+        );
+      }
+    );
+
+    it('7. Super user should be able to get their pipelinesources by Id',
+      function (done) {
+        superUserApiAdapter.getPipelineSourceById(superUserPipelineSource.id,
+          function (err, piplinsid) {
+            if (err)
+              return done(
+                new Error(
+                  util.format('Super user cannot get pipelineSource by Id', err)
+                )
+              );
+            superUserPipelineSource = piplinsid;
+             assert.isNotEmpty(superUserApiAdapter, 'Super user cannot find the pipelineSourcesId');
+            return done();
+          }
+        );
+      }
+    );
+
+    it('8. Admin should be able to get their pipelinesources by Id',
+      function (done) {
+        adminApiAdapter.getPipelineSourceById(adminUserPipelineSource.id,
+          function (err, piplinsid) {
+            if (err)
+              return done(
+                new Error(
+                  util.format('Admin cannot get pipelineSource by Id', err)
+                )
+              );
+            adminUserPipelineSource = piplinsid;
+            memberPipelineSource = adminUserPipelineSource;
+             assert.isNotEmpty(adminUserPipelineSource, 'Admin cannot find the pipelineSourcesId');
+            return done();
+          }
+        );
+      }
+    );
+
+    it('9. Member should be able to get their pipelinesources by Id',
+      function (done) {
+        memberApiAdapter.getPipelineSourceById(memberPipelineSource.id,
+          function (err, piplinsid) {
+            if (err)
+              return done(
+                new Error(
+                  util.format('Member cannot get pipelineSource by Id', err)
+                )
+              );
+             assert.isNotEmpty(memberPipelineSource, 'Member cannot find the pipelineSourcesId');
+            return done();
+          }
+        );
+      }
+    );
+
+    it('10. Super user should be able to get their pipelinesources',
+      function (done) {
+         superUserApiAdapter.getPipelineSources('',
            function (err, piplin) {
              if (err)
                return done(
                 new Error(
-                  util.format('User cannot get pipelineSources', err)
+                  util.format('Super user cannot get pipelineSources', err)
                  )
               );
-             pipelineSource = _.first(piplin);
-             assert.isNotEmpty(pipelineSource, 'User cannot find the pipelineSources');
+             assert.isNotEmpty(superUserPipelineSource, 'Super user cannot find the pipelineSources');
              return done();
           }
         );
       }
     );
 
-    it('7. Id field in pipelineSource API shouldnot be null and should be a integer type',
+    it('11. Admin should be able to get their pipelinesources',
       function (done) {
-        assert.isNotNull(pipelineSource.id, 'Id cannot be null');
-        assert.equal(typeof(pipelineSource.id), 'number');
+         adminApiAdapter.getPipelineSources('',
+           function (err, piplins) {
+             if (err)
+               return done(
+                new Error(
+                  util.format('Admin user cannot get pipelineSources', err)
+                 )
+              );
+             assert.isNotEmpty(adminUserPipelineSource, 'Admin user cannot find the pipelineSources');
+             return done();
+          }
+        );
+      }
+    );
+
+    it('12. Member should be able to get their pipelinesources',
+      function (done) {
+         memberApiAdapter.getPipelineSources('',
+           function (err, piplins) {
+             if (err)
+               return done(
+                new Error(
+                  util.format('Member cannot get pipelineSources', err)
+                 )
+              );
+             assert.isNotEmpty(memberPipelineSource, 'Member cannot find the pipelineSources');
+             return done();
+          }
+        );
+      }
+    );
+
+    it('13. Id field in pipelineSource API shouldnot be null and should be a integer type',
+      function (done) {
+        assert.isNotNull(superUserPipelineSource.id, 'Id cannot be null');
+        assert.equal(typeof(superUserPipelineSource.id), 'number');
         return done();
       }
     );
 
-    it('8. ProjectId field in pipelineSource API shouldnot be null and should be a integer type',
+    it('14. ProjectId field in pipelineSource API shouldnot be null and should be a integer type',
       function (done) {
-        assert.isNotNull(pipelineSource.projectId, 'ProjectId cannot be null');
-        assert.equal(typeof(pipelineSource.projectId), 'number');
+        assert.isNotNull(superUserPipelineSource.projectId, 'ProjectId cannot be null');
+        assert.equal(typeof(superUserPipelineSource.projectId), 'number');
         return done();
       }
     );
 
-    it('9. RepositoryFullName field in pipelineSource API shouldnot be null and should be a string',
+    it('15. RepositoryFullName field in pipelineSource API shouldnot be null and should be a string',
       function (done) {
-        assert.isNotNull(pipelineSource.repositoryFullName, 'RepositoryFullName cannot be null');
-        assert.equal(typeof(pipelineSource.repositoryFullName), 'string');
+        assert.isNotNull(superUserPipelineSource.repositoryFullName, 'RepositoryFullName cannot be null');
+        assert.equal(typeof(superUserPipelineSource.repositoryFullName), 'string');
         return done();
       }
     );
 
-    it('10. Branch field in pipelineSource API shouldnot be null and should be a string',
+    it('16. Branch field in pipelineSource API shouldnot be null and should be a string',
       function (done) {
-        assert.isNotNull(pipelineSource.branch, ' Branch cannot be null');
-        assert.equal(typeof(pipelineSource.branch), 'string');
+        assert.isNotNull(superUserPipelineSource.branch, ' Branch cannot be null');
+        assert.equal(typeof(superUserPipelineSource.branch), 'string');
         return done();
       }
     );
 
-    it('11. FileFilter field in pipelineSource API shouldnot be null and should be a string',
+    it('17. FileFilter field in pipelineSource API shouldnot be null and should be a string',
       function (done) {
-        assert.isNotNull(pipelineSource.fileFilter, 'FileFilter cannot be null');
-        assert.equal(typeof(pipelineSource.fileFilter), 'string');
+        assert.isNotNull(superUserPipelineSource.fileFilter, 'FileFilter cannot be null');
+        assert.equal(typeof(superUserPipelineSource.fileFilter), 'string');
         return done();
       }
     );
 
-    it('12. IntegrationId field in pipelineSource API shouldnot be null and should be a integer type',
+    it('18. IntegrationId field in pipelineSource API shouldnot be null and should be a integer type',
       function (done) {
-        assert.isNotNull(pipelineSource.integrationId, 'IntegrationId cannot be null');
-        assert.equal(typeof(pipelineSource.integrationId), 'number');
+        assert.isNotNull(superUserPipelineSource.integrationId, 'IntegrationId cannot be null');
+        assert.equal(typeof(superUserPipelineSource.integrationId), 'number');
         return done();
       }
     );
 
-    it('13. IsSyncing field in pipelineSource API should be a boolean type',
+    it('19. IsSyncing field in pipelineSource API should be a boolean type',
       function (done) {
-        assert.isNotNull(pipelineSource.isSyncing, 'IsSyncing cannot be null');
-        assert.equal(typeof(pipelineSource.isSyncing), 'boolean');
+        assert.isNotNull(superUserPipelineSource.isSyncing, 'IsSyncing cannot be null');
+        assert.equal(typeof(superUserPipelineSource.isSyncing), 'boolean');
         return done();
       }
     );
 
-    it('14. LastSyncStatusCode field in pipelineSource API shouldnot be null and should be a integer type',
+    it('20. LastSyncStatusCode field in pipelineSource API shouldnot be null and should be a integer type',
       function (done) {
-        assert.isNotNull(pipelineSource.lastSyncStatusCode, 'LastSyncStatusCode cannot be null');
-        assert.equal(typeof(pipelineSource.lastSyncStatusCode), 'number');
+        assert.isNotNull(superUserPipelineSource.lastSyncStatusCode, 'LastSyncStatusCode cannot be null');
+        assert.equal(typeof(superUserPipelineSource.lastSyncStatusCode), 'number');
         return done();
       }
     );
 
-    it('15. LastSyncStartedAt field in pipelineSource API shouldnot be null and should be a string',
+    it('21. LastSyncStartedAt field in pipelineSource API shouldnot be null and should be a string',
       function (done) {
-        assert.isNotNull(pipelineSource.lastSyncStartedAt, 'PipelineSources cannot be null');
-        assert.equal(typeof(pipelineSource.lastSyncStartedAt), 'string');
+        assert.isNotNull(superUserPipelineSource.lastSyncStartedAt, 'PipelineSources cannot be null');
+        assert.equal(typeof(superUserPipelineSource.lastSyncStartedAt), 'string');
         return done();
       }
     );
 
-    it('16. LastSyncEndedAt field in pipelineSource API shouldnot be null and should be a string',
+    it('22. LastSyncEndedAt field in pipelineSource API shouldnot be null and should be a string',
       function (done) {
-        assert.isNotNull(pipelineSource.lastSyncEndedAt, 'LastSyncStartedAt cannot be null');
-        assert.equal(typeof(pipelineSource.lastSyncEndedAt), 'string');
+        assert.isNotNull(superUserPipelineSource.lastSyncEndedAt, 'LastSyncStartedAt cannot be null');
+        assert.equal(typeof(superUserPipelineSource.lastSyncEndedAt), 'string');
         return done();
       }
     );
 
-    // it('17. LastSyncLogs field in pipelineSource API should be an object type',
+    // it('23. LastSyncLogs field in pipelineSource API should be an object type',
     //   function (done) {
-    //     assert.equal(typeof(pipelineSource.lastSyncLogs), 'object');
+    //     assert.equal(typeof(superUserPipelineSource.lastSyncLogs), 'object');
     //     return done();
     //   }
     // );
 
-    it('18. ResourceId field in pipelineSource API shouldnot be null and should be a integer type',
+    it('24. ResourceId field in pipelineSource API shouldnot be null and should be a integer type',
       function (done) {
-        assert.isNotNull(pipelineSource.resourceId, 'ResourceId cannot be null');
-        assert.equal(typeof(pipelineSource.resourceId), 'number');
+        assert.isNotNull(superUserPipelineSource.resourceId, 'ResourceId cannot be null');
+        assert.equal(typeof(superUserPipelineSource.resourceId), 'number');
         return done();
       }
     );
 
-    // it('19. CreatedBy field in pipelineSource API shouldnot be null and should be a string',
+    // it('25. CreatedBy field in pipelineSource API shouldnot be null and should be a string',
     //    function (done) {
-    //   assert.isNotNull(pipelineSource.createdBy, 'CreatedBy cannot be null');
-    //       assert.equal(typeof(pipelineSource.createdBy), 'string');
+    //   assert.isNotNull(superUserPipelineSource.createdBy, 'CreatedBy cannot be null');
+    //       assert.equal(typeof(superUserPipelineSource.createdBy), 'string');
     //       return done();
     //     }
     //   );
 
-    // it('20. UpdatedBy field in pipelineSource API shouldnot be null and should be a string',
+    // it('26. UpdatedBy field in pipelineSource API shouldnot be null and should be a string',
     //   function (done) {
-    //     assert.isNotNull(pipelineSource.updatedBy, 'UpdatedBy cannot be null');
-    //     assert.equal(typeof(pipelineSource.updatedBy), 'string');
+    //     assert.isNotNull(superUserPipelineSource.updatedBy, 'UpdatedBy cannot be null');
+    //     assert.equal(typeof(superUserPipelineSource.updatedBy), 'string');
     //     return done();
     //   }
     // );
 
-    it('21. CreatedAt field in pipelineSource API shouldnot be null and should be a string',
+    it('27. CreatedAt field in pipelineSource API shouldnot be null and should be a string',
       function (done) {
-        assert.isNotNull(pipelineSource.createdAt, 'CreatedAt cannot be null');
-        assert.equal(typeof(pipelineSource.createdAt), 'string');
+        assert.isNotNull(superUserPipelineSource.createdAt, 'CreatedAt cannot be null');
+        assert.equal(typeof(superUserPipelineSource.createdAt), 'string');
         return done();
       }
     );
 
-    it('22. UpdatedAt field in pipelineSource API shouldnot be null and should be a string',
+    it('28. UpdatedAt field in pipelineSource API shouldnot be null and should be a string',
       function (done) {
-        assert.isNotNull(pipelineSource.updatedAt, 'UpdatedAt cannot be null');
-        assert.equal(typeof(pipelineSource.updatedAt), 'string');
+        assert.isNotNull(superUserPipelineSource.updatedAt, 'UpdatedAt cannot be null');
+        assert.equal(typeof(superUserPipelineSource.updatedAt), 'string');
         return done();
       }
     );
 
-    it('23.  User can delete pipelineSource by Id',
+    it('29. Admin should be able to delete pipelineSource by Id',
       function (done) {
-         userApiAdapter.deletePipelineSourcesById(pipelineSource.id,
+         adminApiAdapter.deletePipelineSourcesById(adminUserPipelineSource.id,
            function (err, result) {
              if (err || _.isEmpty(result))
                return done(
                  new Error(
-                   util.format('User cannot delete PipelineSources by Id',
-                     PipelineSource.id, err)
+                   util.format('Admin cannot delete PipelineSources by Id',
+                     adminUserPipelineSource.id, err)
                  )
                 );
-
-             return done();
+              return done();
            }
          );
        }
     );
+
+    it('30. Super user should be able to delete pipelineSource by Id',
+      function (done) {
+         superUserApiAdapter.deletePipelineSourcesById(superUserPipelineSource.id,
+           function (err, result) {
+             if (err || _.isEmpty(result))
+               return done(
+                 new Error(
+                   util.format('Super user cannot delete PipelineSources by Id',
+                     superUserPipelineSource.id, err)
+                 )
+                );
+              return done();
+           }
+         );
+       }
+    );
+
 
     after(
       function (done) {

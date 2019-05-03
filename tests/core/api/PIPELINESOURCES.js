@@ -63,7 +63,7 @@ describe(test,
         var body = {
          "masterIntegrationId": 20,
          "masterIntegrationName": "github",
-         "name": global.GH_NAMEGIT,
+         "name": global.GH_USR_API_ADMIN_PROJECT_NAME,
          "projectId": project.id,
          "formJSONValues": [
              {
@@ -150,7 +150,7 @@ describe(test,
       }
     );
 
-    it('5. Super user should be able to get their pipelineSource by Id',
+    it('5. Super user should be able to update their pipelineSource by Id',
       function (done) {
         var body = {
             "isSyncing": true
@@ -170,7 +170,7 @@ describe(test,
       }
     );
 
-    it('6. Admin should be able to get their pipelineSource by Id',
+    it('6. Admin should be able to update their pipelineSource by Id',
       function (done) {
         var body = {
             "isSyncing": true
@@ -220,7 +220,7 @@ describe(test,
               );
             adminUserPipelineSource = piplinsid;
             memberPipelineSource = adminUserPipelineSource;
-             assert.isNotEmpty(piplinsid, 'Admin cannot find the pipelineSourcesId');
+             assert.isNotEmpty(adminUserPipelineSource, 'Admin cannot find the pipelineSourcesId');
             return done();
           }
         );
@@ -230,7 +230,6 @@ describe(test,
     it('9. Member should be able to get their pipelinesources by Id',
       function (done) {
         memberApiAdapter.getPipelineSourceById(memberPipelineSource.id,
-
           function (err, piplinsid) {
             if (err)
               return done(
@@ -238,7 +237,6 @@ describe(test,
                   util.format('Member cannot get pipelineSource by Id', err)
                 )
               );
-            memberPipelineSource = piplinsid;
              assert.isNotEmpty(memberPipelineSource, 'Member cannot find the pipelineSourcesId');
             return done();
           }
@@ -290,7 +288,6 @@ describe(test,
                   util.format('Member cannot get pipelineSources', err)
                  )
               );
-             memberPipelineSource = _.first(piplins);
              assert.isNotEmpty(memberPipelineSource, 'Member cannot find the pipelineSources');
              return done();
           }
@@ -436,26 +433,24 @@ describe(test,
                      adminUserPipelineSource.id, err)
                  )
                 );
-
-             return done();
+              return done();
            }
          );
        }
     );
 
-    it('30. superUser should be able to delete pipelineSource by Id',
+    it('30. Super user should be able to delete pipelineSource by Id',
       function (done) {
          superUserApiAdapter.deletePipelineSourcesById(superUserPipelineSource.id,
            function (err, result) {
              if (err || _.isEmpty(result))
                return done(
                  new Error(
-                   util.format('superUser cannot delete PipelineSources by Id',
+                   util.format('Super user cannot delete PipelineSources by Id',
                      superUserPipelineSource.id, err)
                  )
                 );
-
-             return done();
+              return done();
            }
          );
        }

@@ -6,16 +6,18 @@ var test = util.format('%s - %s', testSuite, testSuiteDesc);
 
 describe(test,
   function () {
-    var userApiAdapter = null;
+    var superUserApiAdapter = null;
     var step = {};
     var steplet = {};
     var project = {};
-    var integration = {};
+    var projectIntegration = {};
     var pipelineSources = {};
     var pipeline = {};
     var pipelineSteps = {};
     var run = {};
     var stepletConsoles = {};
+    var adminApiAdapter = null;
+    var memberApiAdapter = null;
 
     this.timeout(0);
     before(
@@ -29,17 +31,22 @@ describe(test,
               logger.error(test, 'Failed to setup tests. err:', err);
               return done(err);
             }
-            userApiAdapter =
-              global.newApiAdapterByToken(global.SHIPPABLE_API_TOKEN);
+            superUserApiAdapter =
+              global.newApiAdapterByToken(global.SHIPPABLE_SUPERUSER_API_TOKEN);
+            adminApiAdapter =
+              global.newApiAdapterByToken(global.SHIPPABLE_ADMIN_API_TOKEN);
+            memberApiAdapter =
+              global.newApiAdapterByToken(global.SHIPPABLE_MEMBER_API_TOKEN);
+
             return done();
           }
         );
       }
     );
 
-    it('1. User can get their projects',
+    it('1. SuperUser can get their projects',
       function getProject(done) {
-        userApiAdapter.getProjects('',
+        superUserApiAdapter.getProjects('',
           function(err, prjs) {
             if (err || _.isEmpty(prjs))
               return done(
@@ -54,7 +61,7 @@ describe(test,
       }
     );
 
-    it('2. User posts github integration to add stepletConsoles',
+    it('2. SuperUser posts github projectIntegration to add stepletConsoles',
       function (done) {
         var body = {
          "masterIntegrationId": 20,
@@ -72,37 +79,37 @@ describe(test,
              }
           ]
         };
-        userApiAdapter.postIntegration(body,
+        superUserApiAdapter.postProjectIntegration(body,
           function (err, int) {
             if (err)
               return done(
                 new Error(
-                  util.format('User cannot add integration',
+                  util.format('SuperUser cannot add projectIntegration',
                     util.inspect(err))
                 )
               );
-            integration = int;
+            projectIntegration = int;
             return done();
           }
         );
       }
     );
 
-    it('3. User can post their pipelineSources to add stepletConsoles',
+    it('3. SuperUser can post their pipelineSources to add stepletConsoles',
       function (done) {
         var body = {
           "projectId": project.id,
           "repositoryFullName": global.GH_USERNAME + '/' +
             global.GH_PROJECT_NAME,
           "branch": global.GH_PROJECT_BRANCH,
-          "integrationId": integration.id
+          "projectIntegrationId": projectIntegration.id
         };
-        userApiAdapter.postPipelineSources(body,
+        superUserApiAdapter.postPipelineSources(body,
           function (err, pSource) {
             if (err)
               return done(
                 new Error(
-                  util.format('User cannot add pipelineSources',
+                  util.format('SuperUser cannot add pipelineSources',
                     util.inspect(err))
                 )
               );
@@ -114,19 +121,19 @@ describe(test,
       }
     );
 
-    it('4. User post pipeline to add stepletConsoles',
+    it('4. SuperUser post pipeline to add stepletConsoles',
       function (done) {
         var body = {
           "name": global.GH_USR_API_PIPELINE_NAME,
           "projectId": project.id,
           "pipelineSourceId": pipelineSources.id
         };
-        userApiAdapter.postPipeline(body,
+        superUserApiAdapter.postPipeline(body,
           function (err, pipe) {
             if (err)
               return done(
                 new Error(
-                  util.format('User cannot add pipeline',
+                  util.format('SuperUser cannot add pipeline',
                     util.inspect(err))
                 )
               );
@@ -137,7 +144,7 @@ describe(test,
       }
     );
 
-    it('5. User post pipelineSteps to add stepletConsoles',
+    it('5. SuperUser post pipelineSteps to add stepletConsoles',
       function (done) {
         var body = {
           "name": global.GH_USR_API_PIPELINESTEPS_NAME,
@@ -151,12 +158,12 @@ describe(test,
               "type": "runSh"
           }
         };
-        userApiAdapter.postPipelineSteps(body,
+        superUserApiAdapter.postPipelineSteps(body,
           function (err, psteps) {
             if (err)
               return done(
                 new Error(
-                  util.format('User cannot add PipelineSteps',
+                  util.format('SuperUser cannot add PipelineSteps',
                     util.inspect(err))
                 )
               );
@@ -167,19 +174,19 @@ describe(test,
       }
     );
 
-    it('6. User post runs to add stepletConsoles',
+    it('6. SuperUser post runs to add stepletConsoles',
       function (done) {
         var body = {
           "pipelineId": pipeline.id,
           "projectId": project.id,
           "statusCode":1000
         };
-        userApiAdapter.postRuns(body,
+        superUserApiAdapter.postRuns(body,
           function (err, rSource) {
             if (err)
               return done(
                 new Error(
-                  util.format('User cannot add Run',
+                  util.format('SuperUser cannot add Run',
                     util.inspect(err))
                 )
               );
@@ -190,7 +197,7 @@ describe(test,
       }
     );
 
-    it('7. user post steps to add stepletConsoles',
+    it('7. Superuser post steps to add stepletConsoles',
       function (done) {
         var body = {
           "projectId": project.id,
@@ -201,12 +208,12 @@ describe(test,
           "typeCode" : 2007,
           "statusCode": 4002
         };
-        userApiAdapter.postSteps(body,
+        superUserApiAdapter.postSteps(body,
           function (err, result) {
             if (err)
               return done(
                 new Error(
-                  util.format('User cannot add steps',
+                  util.format('SuperUser cannot add steps',
                     util.inspect(err))
                 )
               );
@@ -217,7 +224,7 @@ describe(test,
       }
     );
 
-    it('8. User can add new steplets',
+    it('8. SuperUser can add new steplets',
       function (done) {
         var body = {
           "projectId": project.id,
@@ -226,12 +233,12 @@ describe(test,
           "stepletNumber": global.GH_STEPLET_NUMBER,
           "statusCode": global.GH_STATUS_CODE
         };
-        userApiAdapter.postSteplet(body,
+        superUserApiAdapter.postSteplet(body,
           function (err, stplet) {
             if (err)
               return done(
                 new Error(
-                  util.format('User cannot add Steplet',
+                  util.format('SuperUser cannot add Steplet',
                     util.inspect(err))
                  )
                );
@@ -242,7 +249,7 @@ describe(test,
       }
     );
 
-    it('9. user can add new stepletConsoles',
+    it('9. Superuser can add new stepletConsoles',
       function (done) {
         var body = {
           "stepletId": steplet.id,
@@ -257,12 +264,12 @@ describe(test,
             "isShown": true
            }]
          }
-        userApiAdapter.postStepletConsoles(body,
+        superUserApiAdapter.postStepletConsoles(body,
           function (err, result) {
             if (err)
               return done(
                 new Error(
-                  util.format('User cannot add stepletConsoles',
+                  util.format('SuperUser cannot add stepletConsoles',
                     util.inspect(err))
                 )
               );
@@ -273,26 +280,64 @@ describe(test,
       }
     );
 
-    it('10. user can get their stepletConsoles',
+    it('10. Superuser can get their stepletConsoles',
       function (done) {
-        userApiAdapter.getStepletConsolesByStepletsId(steplet.id,
+        superUserApiAdapter.getStepletConsolesByStepletsId(steplet.id,
           function (err, result) {
             if (err)
               return done(
                 new Error(
-                  util.format('User cannot get stepletConsoles',
+                  util.format('SuperUser cannot get stepletConsoles',
                     result, err)
                 )
               );
             stepletConsoles = _.first(result.root);
-            assert.isNotEmpty(result, 'User cannot find the stepletConsoles');
+            assert.isNotEmpty(result, 'SuperUser cannot find the stepletConsoles');
             return done();
           }
         );
       }
     );
 
-    it('11. StepletconsolesConsoleId field in stepletConsoles API shouldnot be null and should be a string type',
+    it('11. Admin can get their stepletConsoles',
+      function (done) {
+        adminApiAdapter.getStepletConsolesByStepletsId(steplet.id,
+          function (err, result) {
+            if (err)
+              return done(
+                new Error(
+                  util.format('Admin cannot get stepletConsoles',
+                    result, err)
+                )
+              );
+            stepletConsoles = _.first(result.root);
+            assert.isNotEmpty(result, 'Admin cannot find the stepletConsoles');
+            return done();
+          }
+        );
+      }
+    );
+
+    it('12. Member can get their stepletConsoles',
+      function (done) {
+        memberApiAdapter.getStepletConsolesByStepletsId(steplet.id,
+          function (err, result) {
+            if (err)
+              return done(
+                new Error(
+                  util.format('Member cannot get stepletConsoles',
+                    result, err)
+                )
+              );
+            stepletConsoles = _.first(result.root);
+            assert.isNotEmpty(result, 'Member cannot find the stepletConsoles');
+            return done();
+          }
+        );
+      }
+    );
+
+    it('13. StepletconsolesConsoleId field in stepletConsoles API shouldnot be null and should be a string type',
       function (done) {
         assert.isNotNull(stepletConsoles.consoleId, 'StepletConsoles name cannot be null');
         assert.equal(typeof(stepletConsoles.consoleId), 'string');
@@ -300,21 +345,21 @@ describe(test,
       }
     );
 
-    it('12. StepletconsolesIsShown field in stepletConsoles API should be a boolean type',
+    it('14. StepletconsolesIsShown field in stepletConsoles API should be a boolean type',
       function (done) {
         assert.equal(typeof(stepletConsoles.isShown), 'boolean');
         return done();
       }
     );
 
-    // it('13. StepletconsolesIsSuccess field in stepletConsoles API should be a boolean type',
+    // it('15. StepletconsolesIsSuccess field in stepletConsoles API should be a boolean type',
     //   function (done) {
     //     assert.equal(typeof(stepletConsoles.isSuccess), 'boolean');
     //     return done();
     //   }
     // ); commenting since type is undefined as of now. Will uncomment once it is fixed
 
-    it('14. StepletconsolesParentConsoleId field in stepletConsoles API shouldnot be null and should be a string type',
+    it('16. StepletconsolesParentConsoleId field in stepletConsoles API shouldnot be null and should be a string type',
       function (done) {
         assert.isNotNull(stepletConsoles.parentConsoleId, 'StepletConsoles parent console id cannot be null');
         assert.equal(typeof(stepletConsoles.parentConsoleId), 'string');
@@ -322,7 +367,7 @@ describe(test,
       }
     );
 
-    // it('15. StepletconsolesStepletId field in stepletConsoles API shouldnot be null and should be a integer type',
+    // it('17. StepletconsolesStepletId field in stepletConsoles API shouldnot be null and should be a integer type',
     //   function (done) {
     //     assert.isNotNull(stepletConsoles.stepletId, 'StepletConsoles steplet id cannot be null');
     //     assert.equal(typeof(stepletConsoles.stepletId), 'number');
@@ -330,7 +375,7 @@ describe(test,
     //   }
     // );
 
-    it('16. StepletconsolesTimestamp field in stepletConsoles API shouldnot be null and should be a integer type',
+    it('18. StepletconsolesTimestamp field in stepletConsoles API shouldnot be null and should be a integer type',
       function (done) {
         assert.isNotNull(stepletConsoles.timestamp, 'StepletConsoles timestamp cannot be null');
         assert.equal(typeof(stepletConsoles.timestamp), 'number');
@@ -338,14 +383,14 @@ describe(test,
       }
     );
 
-    // it('17. StepletconsolesTimestampEndedAt field in stepletConsoles API should be a integer type',
+    // it('19. StepletconsolesTimestampEndedAt field in stepletConsoles API should be a integer type',
     //   function (done) {
     //     assert.equal(typeof(stepletConsoles.timestampEndedAt), 'number');
     //     return done();
     //   }
     // );
 
-    it('18. StepletconsolesType field in stepletConsoles API shouldnot be null and should be a string type',
+    it('20. StepletconsolesType field in stepletConsoles API shouldnot be null and should be a string type',
       function (done) {
         assert.isNotNull(stepletConsoles.type, 'StepletConsoles type cannot be null');
         assert.equal(typeof(stepletConsoles.type), 'string');
@@ -353,7 +398,7 @@ describe(test,
       }
     );
 
-    it('19. StepletconsolesMessage field in stepletConsoles API shouldnot be null and should be a string type',
+    it('21. StepletconsolesMessage field in stepletConsoles API shouldnot be null and should be a string type',
       function (done) {
         assert.isNotNull(stepletConsoles.message, 'StepletConsoles message cannot be null');
         assert.equal(typeof(stepletConsoles.message), 'string');
@@ -361,7 +406,7 @@ describe(test,
       }
     );
 
-    it('20. StepletconsolesCreatedAt field in stepletConsoles API shouldnot be null and should be a string type',
+    it('22. StepletconsolesCreatedAt field in stepletConsoles API shouldnot be null and should be a string type',
       function (done) {
         assert.isNotNull(stepletConsoles.createdAt, 'StepletConsoles created at cannot be null');
         assert.equal(typeof(stepletConsoles.createdAt), 'string');
@@ -369,7 +414,7 @@ describe(test,
       }
     );
 
-  // it('21. StepletconsolesUpdatedAt field in stepletConsoles API shouldnot be null and should be a string type',
+  // it('23. StepletconsolesUpdatedAt field in stepletConsoles API shouldnot be null and should be a string type',
   //   function (done) {
   //     assert.isNotNull(stepletConsoles.updatedAt, 'StepletConsoles updated at cannot be null');
   //     assert.equal(typeof(stepletConsoles.updatedAt), 'string');
@@ -377,14 +422,14 @@ describe(test,
   //   }
   // );
 
-    it('22. user can delete stepletConsoles by pipelineId',
+    it('24. Superuser can delete stepletConsoles by pipelineId',
       function (done) {
-        userApiAdapter.deleteStepletConsolesByPipelineId(pipeline.id,
+        superUserApiAdapter.deleteStepletConsolesByPipelineId(pipeline.id,
           function (err, result) {
             if (err)
               return done(
                 new Error(
-                  util.format('User cannot delete stepletConsoles by pipelineId',
+                  util.format('SuperUser cannot delete stepletConsoles by pipelineId',
                     pipeline.id, err)
                 )
               );
@@ -394,14 +439,14 @@ describe(test,
       }
     );
 
-    it('23. user can delete step by Id for stepletConsoles',
+    it('25. Superuser can delete step by Id for stepletConsoles',
       function (done) {
-        userApiAdapter.deleteStepById(step.id,
+        superUserApiAdapter.deleteStepById(step.id,
           function (err, result) {
             if (err || _.isEmpty(result))
               return done(
                 new Error(
-                  util.format('User cannot delete step by Id',
+                  util.format('SuperUser cannot delete step by Id',
                     steplet.id, err)
                 )
               );
@@ -411,14 +456,14 @@ describe(test,
       }
     );
 
-    it('24.  User can delete by runs for stepletConsoles',
+    it('26.  SuperUser can delete by runs for stepletConsoles',
       function (done) {
-        userApiAdapter.deleteRunsByPipelineId(pipeline.id,
+        superUserApiAdapter.deleteRunsByPipelineId(pipeline.id,
           function (err, result) {
             if (err || _.isEmpty(result))
               return done(
                 new Error(
-                  util.format('User cannot delete Runs by pipelineId',
+                  util.format('SuperUser cannot delete Runs by pipelineId',
                     run.id, err)
                 )
               );
@@ -428,14 +473,14 @@ describe(test,
       }
     );
 
-    it('25. User can deletes pipelineSteps by Id for stepletConsoles',
+    it('27. SuperUser can deletes pipelineSteps by Id for stepletConsoles',
       function (done) {
-        userApiAdapter.deletePipelineStepsById(pipelineSteps.id,
+        superUserApiAdapter.deletePipelineStepsById(pipelineSteps.id,
           function (err, psteps) {
             if (err || _.isEmpty(psteps))
               return done(
                 new Error(
-                  util.format('User cannot delete pipelineSteps by Id',
+                  util.format('SuperUser cannot delete pipelineSteps by Id',
                     pipelineSteps.id, err)
                 )
               );
@@ -445,14 +490,14 @@ describe(test,
       }
     );
 
-    it('26.  User can delete pipelines by Id for stepletConsoles',
+    it('28. SuperUser can delete pipelines by Id for stepletConsoles',
       function (done) {
-        userApiAdapter.deletePipelineById(pipeline.id,
+        superUserApiAdapter.deletePipelineById(pipeline.id,
           function (err, res) {
             if (err || _.isEmpty(res))
               return done(
                 new Error(
-                  util.format('User cannot delete Pipelines by Id',
+                  util.format('SuperUser cannot delete Pipelines by Id',
                     pipeline.id, err)
                 )
               );
@@ -462,14 +507,14 @@ describe(test,
       }
     );
 
-    it('27. User can delete pipelineSource by Id for stepletConsoles',
+    it('29. SuperUser can delete pipelineSource by Id for stepletConsoles',
       function (done) {
-        userApiAdapter.deletePipelineSourcesById(pipelineSources.id,
+        superUserApiAdapter.deletePipelineSourcesById(pipelineSources.id,
           function (err, res) {
             if (err || _.isEmpty(res))
               return done(
                 new Error(
-                  util.format('User cannot delete PipelineSources by Id',
+                  util.format('SuperUser cannot delete PipelineSources by Id',
                     pipelineSource.id, err)
 
                 )
@@ -480,15 +525,15 @@ describe(test,
       }
     );
 
-    it('28. User can deletes integration by Id for stepletConsoles',
+    it('30. SuperUser can deletes projectIntegration by Id for stepletConsoles',
       function (done) {
-        userApiAdapter.deleteIntegrationById(integration.id,
+        superUserApiAdapter.deleteProjectIntegrationById(projectIntegration.id,
           function (err, ints) {
             if (err || _.isEmpty(ints))
               return done(
                 new Error(
-                  util.format('User cannot delete integration by Id',
-                    integration.id, err)
+                  util.format('SuperUser cannot delete projectIntegration by Id',
+                    projectIntegration.id, err)
                 )
               );
             return done();

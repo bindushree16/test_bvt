@@ -8,9 +8,12 @@ var test = util.format('%s - %s', testSuite, testSuiteDesc);
 
 describe(test,
   function () {
-    var userApiAdapter = null;
+    var superUserApiAdapter = null;
+    var adminApiAdapter = null;
+    var memberApiAdapter = null;
     var project = [];
     var projectIntegration = [];
+    var adminProjectIntegration = [];
 
     this.timeout(0);
     before(
@@ -25,15 +28,18 @@ describe(test,
               return done(err);
             }
 
-          userApiAdapter =
-            global.newApiAdapterByToken(global.SHIPPABLE_API_TOKEN);
-              userApiAdapter.getProjects('',
+          superUserApiAdapter =
+            global.newApiAdapterByToken(global.SHIPPABLE_SUPERUSER_API_TOKEN);
+          adminApiAdapter =
+            global.newApiAdapterByToken(global.SHIPPABLE_ADMIN_API_TOKEN);
+          memberApiAdapter =
+            global.newApiAdapterByToken(global.SHIPPABLE_MEMBER_API_TOKEN);
+              superUserApiAdapter.getProjects('',
                 function(err, prjs) {
                   if (err || _.isEmpty(prjs))
                     return done(
                       new Error(
-                        util.format('Project list is empty',
-                          query, err)
+                        util.format('Project list is empty',err)
                       )
                     );
                   project = _.first(prjs);
@@ -45,11 +51,11 @@ describe(test,
       }
     );
 
-    it('1. User can add new project Integration',
+    it('1. SuperUser can add new project Integration',
       function (done) {
         var body = {
            "masterIntegrationId": 77,
-           "name": global.GH_USR_API_PROJECTINTEGRATION_NAME,
+           "name": global.GH_API_PROJECTINTEGRATION_NAME_SUPERUSER,
            "projectId": project.id,
            "formJSONValues": [
                    {
@@ -71,12 +77,12 @@ describe(test,
                  ]
                };
 
-        userApiAdapter.postProjectIntegration(body,
+        superUserApiAdapter.postProjectIntegration(body,
           function (err, ints) {
             if (err)
               return done(
                 new Error(
-                  util.format('User cannot add project integration',
+                  util.format('SuperUser cannot add project integration',
                     util.inspect(err))
                 )
               );
@@ -87,34 +93,116 @@ describe(test,
       }
     );
 
-    it('2. User can get their project integration',
+    it('2. Admin can add new project Integration',
       function (done) {
-        var query = 'projectIds=' + project.id;
-        userApiAdapter.getProjectIntegrations(query,
+        var body = {
+           "masterIntegrationId": 77,
+           "name": global.GH_API_PROJECTINTEGRATION_NAME_ADMIN,
+           "projectId": project.id,
+           "formJSONValues": [
+                   {
+                       "label": "email",
+                       "value": "shptest@shippable.com"
+                   },
+                   {
+                       "label": "password",
+                       "value": "Qhode1234"
+                   },
+                   {
+                       "label": "url",
+                       "value": "https://index.docker.io/v1/"
+                   },
+                   {
+                       "label": "username",
+                       "value": "shippabledocker"
+                   }
+                 ]
+               };
+
+        adminApiAdapter.postProjectIntegration(body,
           function (err, ints) {
             if (err)
               return done(
                 new Error(
-                  util.format('User cannot get project integration',
-                    query, err)
+                  util.format('Admin cannot add project integration',
+                    util.inspect(err))
                 )
               );
-            projectIntegration = _.findWhere(ints, {masterIntegrationName: "dockerRegistryLogin"});
-            assert.isNotEmpty(ints, 'User cannot find the project integration');
+              adminProjectIntegration = ints;
             return done();
           }
         );
       }
     );
 
-    it('3. User can get project integration by Id',
+    it('3. SuperUser can get their project integration',
       function (done) {
-        userApiAdapter.getProjectIntegrationById(projectIntegration.id,
+        var query = 'projectIds=' + project.id;
+        superUserApiAdapter.getProjectIntegrations(query,
+          function (err, ints) {
+            if (err)
+              return done(
+                new Error(
+                  util.format('SuperUser cannot get project integration',
+                    query, err)
+                )
+              );
+            projectIntegration = _.findWhere(ints, {masterIntegrationName: "dockerRegistryLogin"});
+            assert.isNotEmpty(ints, 'SuperUser cannot find the project integration');
+            return done();
+          }
+        );
+      }
+    );
+
+    it('4. Admin can get their project integration',
+      function (done) {
+        var query = 'projectIds=' + project.id;
+        adminApiAdapter.getProjectIntegrations(query,
+          function (err, ints) {
+            if (err)
+              return done(
+                new Error(
+                  util.format('Admin cannot get project integration',
+                    query, err)
+                )
+              );
+            projectIntegration = _.findWhere(ints, {masterIntegrationName: "dockerRegistryLogin"});
+            assert.isNotEmpty(ints, 'Admin cannot find the project integration');
+            return done();
+          }
+        );
+      }
+    );
+
+    it('5. Member can get their project integration',
+      function (done) {
+        var query = 'projectIds=' + project.id;
+        memberApiAdapter.getProjectIntegrations(query,
+          function (err, ints) {
+            if (err)
+              return done(
+                new Error(
+                  util.format('Member cannot get project integration',
+                    query, err)
+                )
+              );
+            projectIntegration = _.findWhere(ints, {masterIntegrationName: "dockerRegistryLogin"});
+            assert.isNotEmpty(ints, 'Member cannot find the project integration');
+            return done();
+          }
+        );
+      }
+    );
+
+    it('6. SuperUser can get project integration by Id',
+      function (done) {
+        superUserApiAdapter.getProjectIntegrationById(projectIntegration.id,
           function (err, ints) {
             if (err || _.isEmpty(ints))
               return done(
                 new Error(
-                  util.format('User cannot get project integration by Id',
+                  util.format('SuperUser cannot get project integration by Id',
                     projectIntegration.id, err)
                 )
               );
@@ -124,28 +212,81 @@ describe(test,
       }
     );
 
-    it('4. User can update the project integration',
+    // it('7. Admin can get project integration by Id',
+    //   function (done) {
+    //     adminApiAdapter.getProjectIntegrationById(adminProjectIntegration.id,
+    //       function (err, ints) {
+    //         if (err || _.isEmpty(ints))
+    //           return done(
+    //             new Error(
+    //               util.format('Admin cannot get project integration by Id',
+    //                 adminProjectIntegration.id, err)
+    //             )
+    //           );
+    //         return done();
+    //       }
+    //     );
+    //   }
+    // ); commenting, since till we fix https://github.com/Shippable/heap/issues/2958
+    //
+    // it('8. Member can get project integration by Id',
+    //   function (done) {
+    //     memberApiAdapter.getProjectIntegrationById(projectIntegration.id,
+    //       function (err, ints) {
+    //         if (err || _.isEmpty(ints))
+    //           return done(
+    //             new Error(
+    //               util.format('Member cannot get project integration by Id',
+    //                 projectIntegration.id, err)
+    //             )
+    //           );
+    //         return done();
+    //       }
+    //     );
+    //   }
+    // );
+
+    it('9. SuperUser can update the project integration',
       function (done) {
         var body = {
            "name" : global.GH_USR_API_RENAME_PROJECTINTERGATION
               };
-        userApiAdapter.putProjectIntegrationById(projectIntegration.id, body,
+        superUserApiAdapter.putProjectIntegrationById(projectIntegration.id, body,
           function (err, ints) {
             if (err)
               return done(
                 new Error(
-                  util.format('User cannot update project integration',
+                  util.format('SuperUser cannot update project integration',
                     util.inspect(err))
-                 )
-               );
-             return done();
-           }
-         );
-       }
-     );
+                )
+              );
+            return done();
+          }
+        );
+      }
+    );
 
+    // it('10. Admin can update the project integration',
+    //   function (done) {
+    //     var body = {
+    //       "name" : global.GH_USR_API_RENAME_PROJECTINTERGATION
+    //          };
+    //    adminApiAdapter.putProjectIntegrationById(adminProjectIntegration.id, body,
+    //      function (err, ints) {
+    //        if (err)
+    //          return done(
+    //            new Error(
+    //              util.format('Admin cannot update project integration',
+    //                util.inspect(err))
+    //             )
+    //           );
+    //         return done();
+    //       }
+    //     );
+    //   }
+    // );
 
-    it('4. Id field in project integration API shouldnot be null and should be an integer type',
+    it('11. Id field in project integration API shouldnot be null and should be an integer type',
       function (done) {
         assert.isNotNull(projectIntegration.id, 'project integration Id cannot be null');
         assert.equal(typeof(projectIntegration.id), 'number');
@@ -153,7 +294,7 @@ describe(test,
       }
     );
 
-    it('5. masterintegrationId field in project integration API shouldnot be null and should be a integer type',
+    it('12. masterintegrationId field in project integration API shouldnot be null and should be a integer type',
       function (done) {
         assert.isNotNull(projectIntegration.masterIntegrationId, 'master project integration Id cannot be null');
         assert.equal(typeof(projectIntegration.masterIntegrationId), 'number');
@@ -161,14 +302,14 @@ describe(test,
       }
     );
 
-    it('6. masterintegrationName field in project integration API should be a string type',
+    it('13. masterintegrationName field in project integration API should be a string type',
       function (done) {
         assert.equal(typeof(projectIntegration.masterIntegrationName), 'string');
         return done();
       }
     );
 
-    it('7. masterintegrationType field in project integration API shouldnot be null and should be a string type',
+    it('14. masterintegrationType field in project integration API shouldnot be null and should be a string type',
       function (done) {
         assert.isNotNull(projectIntegration.masterIntegrationType, 'project integration Master Type cannot be null');
         assert.equal(typeof(projectIntegration.masterIntegrationType), 'string');
@@ -176,7 +317,7 @@ describe(test,
       }
     );
 
-    it('8. Name field in project integration API shouldnot be null and should be a string type',
+    it('15. Name field in project integration API shouldnot be null and should be a string type',
       function (done) {
         assert.isNotNull(projectIntegration.name, 'project integration name cannot be null');
         assert.equal(typeof(projectIntegration.name), 'string');
@@ -184,7 +325,7 @@ describe(test,
       }
     );
 
-    it('9. ProjectId field in project integration API shouldnot be null and should be a integer type',
+    it('16. ProjectId field in project integration API shouldnot be null and should be a integer type',
       function (done) {
         assert.isNotNull(projectIntegration.projectId, 'project integration Project Id cannot be null');
         assert.equal(typeof(projectIntegration.projectId), 'number');
@@ -192,14 +333,14 @@ describe(test,
       }
     );
 
-    // it('10. ProviderId field in project integration API should be a integer type',
+    // it('17. ProviderId field in project integration API should be a integer type',
     //   function (done) {
     //     console.log("typeof(projectIntegration.ProviderId)", typeof(projectIntegration.ProviderId));
     //     return done();
     //   }
     // ); commenting since type is undefined as of now. Will uncomment once it is fixed
 
-    it('11. CreatedByUserName field in project integration API shouldnot be null and should be a string type',
+    it('18. CreatedByUserName field in project integration API shouldnot be null and should be a string type',
       function (done) {
         assert.isNotNull(projectIntegration.createdByUserName, 'project integration Created By User Name cannot be null');
         assert.equal(typeof(projectIntegration.createdByUserName), 'string');
@@ -207,7 +348,7 @@ describe(test,
       }
     );
 
-    it('12. UpdatedByUserName field in project integration API shouldnot be null and should be a string type',
+    it('19. UpdatedByUserName field in project integration API shouldnot be null and should be a string type',
       function (done) {
         assert.isNotNull(projectIntegration.updatedByUserName, 'project integration Updated By User Name cannot be null');
         assert.equal(typeof(projectIntegration.updatedByUserName),'string');
@@ -215,7 +356,7 @@ describe(test,
       }
     );
 
-    it('13. CreatedBy field in project integration API shouldnot be null and should be a integer type',
+    it('20. CreatedBy field in project integration API shouldnot be null and should be a integer type',
       function (done) {
         assert.isNotNull(projectIntegration.createdBy, 'project integration Created By cannot be null');
         assert.equal(typeof(projectIntegration.createdBy), 'number');
@@ -223,15 +364,15 @@ describe(test,
       }
     );
 
-    it('14. UpdatedBy field in project integration API shouldnot be null and should be a integer type',
+    it('21. UpdatedBy field in project integration API shouldnot be null and should be a integer type',
       function (done) {
         assert.isNotNull(projectIntegration.updatedBy, 'project integration Updated By cannot be null');
         assert.equal(typeof(projectIntegration.updatedBy),'number');
         return done();
       }
-    ); 
+    );
 
-    it('15. CreatedAt field in project integration API shouldnot be null and should be a string type',
+    it('22. CreatedAt field in project integration API shouldnot be null and should be a string type',
       function (done) {
         assert.isNotNull(projectIntegration.createdAt, 'project integration created at cannot be null');
         assert.equal(typeof(projectIntegration.createdAt), 'string');
@@ -239,7 +380,7 @@ describe(test,
       }
     );
 
-    it('16. UpdatedAt field in project integration API shouldnot be null and should be a string type',
+    it('23. UpdatedAt field in project integration API shouldnot be null and should be a string type',
       function (done) {
         assert.isNotNull(projectIntegration.updatedAt, 'project Integration updated at cannot be null');
         assert.equal(typeof(projectIntegration.updatedAt), 'string');
@@ -247,18 +388,35 @@ describe(test,
       }
     );
 
-    it('17. User can deletes project integration by Id',
+    it('24. SuperUser can deletes project integration by Id',
       function (done) {
-        userApiAdapter.deleteProjectIntegrationById(projectIntegration.id,
+        superUserApiAdapter.deleteProjectIntegrationById(projectIntegration.id,
           function (err, ints) {
             if (err || _.isEmpty(ints))
               return done(
                 new Error(
-                  util.format('User cannot delete project integration by Id',
+                  util.format('SuperUser cannot delete project integration by Id',
                     projectIntegration.id, err)
                 )
               );
+            return done();
+          }
+        );
+      }
+    );
 
+    it('25. Admin can deletes project integration by Id',
+      function (done) {
+
+        adminApiAdapter.deleteProjectIntegrationById(adminProjectIntegration.id,
+          function (err, ints) {
+            if (err || _.isEmpty(ints))
+              return done(
+                new Error(
+                  util.format('Admin cannot delete project integration by Id',
+                    adminProjectIntegration.id, err)
+                )
+              );
             return done();
           }
         );
